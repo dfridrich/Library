@@ -1,4 +1,4 @@
-DefrAresBundle
-==============
+Defr Library
+============
 
-Symfony2 bundle for communication with ARES (Czech business register)
+My base library :-)
