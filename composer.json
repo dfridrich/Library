@@ -1,0 +1,22 @@
+{
+    "name": "dfridrich/library",
+    "type": "library",
+    "description": "My base library :-)",
+    "keywords": ["php", "library"],
+    "homepage": "https://github.com/dfridrich/DefrAresBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dennis Fridrich",
+            "email": "fridrich.dennis@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Defr\\": "src/"
+        }
+    }
+}
