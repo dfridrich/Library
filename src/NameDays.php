@@ -15,12 +15,12 @@ class NameDays
      */
     private static $data = array(
         1 => array(
-            1 => "!nový rok",
+            1 => "!Nový rok",
             "Karina",
             "Radmila",
             "Diana",
             "Dalimil",
-            "!tři králové",
+            "!Tři králové",
             "Vilma",
             "Čestmír",
             "Vladan",
@@ -144,14 +144,14 @@ class NameDays
             "Blahoslav"
         ),
         array(
-            1 => "!svátek práce",
+            1 => "!Svátek práce",
             "Zikmund",
             "Alexej",
             "Květoslav",
             "Klaudie",
             "Radoslav",
             "Stanislav",
-            "!den osvobození",
+            "!Den osvobození",
             "Ctibor",
             "Blažena",
             "Svatava",
@@ -334,14 +334,14 @@ class NameDays
             "Beáta",
             "Erik",
             "Šarlota/Zoe",
-            "!státní svátek",
+            "!Státní svátek",
             "Silvie",
             "Tadeáš",
             "Štěpánka"
         ),
         array(
             1 => "Felix",
-            "!památka zesnulých",
+            "!Památka zesnulých",
             "Hubert",
             "Karel",
             "Miriam",
@@ -396,7 +396,7 @@ class NameDays
             "Šimon",
             "Vlasta",
             "Adam/Eva",
-            "!1.svátek vánoení",
+            "!1. svátek vánoční",
             "Štěpán",
             "Žaneta",
             "Bohumila",
