@@ -224,7 +224,8 @@ class Lib
     }
 
     /**
-     * Vytvori nahodny token podle best practices
+     * @param string $hash
+     * @return string
      */
     public static function getToken($hash = 'md5')
     {
@@ -243,8 +244,8 @@ class Lib
     public static function getBoolLabel($bool)
     {
         return $bool
-            ? '<span class="label label-green">' . self::_('Yes') . '</span>'
-            : '<span class="label label-red">' . self::_('No') . '</span>';
+            ? '<span class="label label-green">Ano</span>'
+            : '<span class="label label-red">Ne</span>';
     }
 
 
@@ -726,7 +727,7 @@ class Lib
      * @param $encoding
      * @return string
      */
-    public static function mbUcfirst($string, $encoding = 'UTF-8')
+    public static function mbUcFirst($string, $encoding = 'UTF-8')
     {
         $strlen = mb_strlen($string, $encoding);
         $firstChar = mb_substr($string, 0, 1, $encoding);
@@ -755,7 +756,7 @@ class Lib
      */
     public static function countMaxPrintSize($origDpi, $minDpi, $origW)
     {
-        //return $origDpi / ;
+        // TODO
         return self::round(($origW / $minDpi) * 2.54, 1);
     }
 
@@ -924,7 +925,7 @@ class Lib
 
     public static function dateToText(\DateTime $date)
     {
-
+        // TODO pretty date
     }
 
 }
