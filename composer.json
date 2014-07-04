@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "symfony/finder": "2.6.*@dev"
+        "symfony/finder": ">=2.5"
     },
     "autoload": {
         "psr-4": {
