@@ -196,7 +196,7 @@ class Lib
      */
     public static function substring($string, $length = 50, $start = 0, $ellipsis = true)
     {
-        $newString = mb_substr($string, $start, $length, 'UTF-8');
+        $newString = trim(mb_substr($string, $start, $length, 'UTF-8'));
         if (strlen($newString) < strlen($string) && $ellipsis)
             return $newString . '...'; //&hellip;
         else
