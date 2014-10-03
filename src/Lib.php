@@ -816,7 +816,7 @@ class Lib
     public static function dirSize($directory)
     {
         $size = 0;
-        foreach (new \RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file) {
+        foreach (new \RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory, \FilesystemIterator::KEY_AS_PATHNAME)) as $file) {
             $size += $file->getSize();
         }
 
