@@ -927,5 +927,14 @@ class Lib
     {
         // TODO pretty date
     }
+    
+    /**
+     * @param $email
+     * @return mixed
+     */
+    public static function isEmail($email)
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
 
 }
