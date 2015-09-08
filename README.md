@@ -1,4 +1,4 @@
-Defr Library
+Defr Library [![Build Status](https://travis-ci.org/dfridrich/Library.svg)](https://travis-ci.org/dfridrich/Library)
 ============
 
 My base library includes:
