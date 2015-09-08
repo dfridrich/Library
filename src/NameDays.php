@@ -285,7 +285,7 @@ class NameDays
             "Mariana",
             "Daniela",
             "Irma",
-            "Denisa",
+            "Dennis/Denisa",
             "Marie",
             "Lubor",
             "Radka",
