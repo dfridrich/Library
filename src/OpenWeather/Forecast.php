@@ -1,15 +1,14 @@
-<?
+<?php
 
 namespace Defr\OpenWeather;
 
 /**
- * Class Forecast
- * @package Defr\OpenWeather
+ * Class Forecast.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Forecast
 {
-
     private $sunset;
     private $sunrise;
     private $city;
@@ -32,14 +31,12 @@ class Forecast
                                 $icon,
                                 $temperature)
     {
-
         $this->sunset = $sunset;
         $this->sunrise = $sunrise;
         $this->city = $city;
         $this->description = $description;
         $this->icon = $icon;
         $this->temperature = $temperature;
-
     }
 
     /**
@@ -89,5 +86,4 @@ class Forecast
     {
         return $this->temperature;
     }
-
 }

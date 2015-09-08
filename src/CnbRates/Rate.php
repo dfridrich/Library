@@ -1,15 +1,14 @@
-<?
+<?php
 
 namespace Defr\CnbRates;
 
 /**
- * Class Rate
- * @package Defr\CnbRates
+ * Class Rate.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Rate
 {
-
     /**
      * @var \DateTime
      */
@@ -18,7 +17,6 @@ class Rate
     /**
      * @var string
      */
-
     public $code;
 
     /**
@@ -55,9 +53,8 @@ class Rate
         $this->code = $code;
         $this->country = $country;
         $this->currency = $currency;
-        $this->amount = (float)$amount;
-        $this->rate = (float)$rate;
-
+        $this->amount = (float) $amount;
+        $this->rate = (float) $rate;
     }
 
     /**
@@ -115,5 +112,4 @@ class Rate
     {
         return $this->rate;
     }
-
 }

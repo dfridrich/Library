@@ -3,13 +3,12 @@
 namespace Defr;
 
 /**
- * Class PhoneNumberGuesser
- * @package Defr
+ * Class PhoneNumberGuesser.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class PhoneNumberGuesser
 {
-
     const TYPE_MOBILE = 'mobile';
     const TYPE_LANDLINE = 'landline';
     const TYPE_SPECIAL = 'special';
@@ -28,6 +27,7 @@ class PhoneNumberGuesser
 
     /**
      * @param $number
+     *
      * @return string
      */
     public static function phoneType($number)
@@ -56,11 +56,11 @@ class PhoneNumberGuesser
 
         // Pokud se nic nechytlo        
         return self::handleOther($number);
-
     }
 
     /**
      * @param $number
+     *
      * @return mixed
      */
     public static function reformatPhone($number)
@@ -75,6 +75,7 @@ class PhoneNumberGuesser
 
     /**
      * @param $number
+     *
      * @return string
      */
     private static function handleDomestic($number)
@@ -104,6 +105,7 @@ class PhoneNumberGuesser
 
     /**
      * @param $number
+     *
      * @return string
      */
     private static function handleSpecial($number)
@@ -113,11 +115,11 @@ class PhoneNumberGuesser
 
     /**
      * @param $number
+     *
      * @return string
      */
     private static function handleOther($number)
     {
         return self::TYPE_OTHER;
     }
-
-}  
+}

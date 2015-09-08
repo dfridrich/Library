@@ -1,15 +1,14 @@
-<?
+<?php
 
 namespace Defr\CnbRates;
 
 /**
- * Class Rates
- * @package Defr\CnbRates
+ * Class Rates.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Rates implements \IteratorAggregate
 {
-
     /**
      * @var \DateTime
      */
@@ -22,7 +21,7 @@ class Rates implements \IteratorAggregate
 
     /**
      * @param \DateTime $date
-     * @param array $rates
+     * @param array     $rates
      */
     public function __construct(\DateTime $date, array $rates)
     {
@@ -32,7 +31,9 @@ class Rates implements \IteratorAggregate
 
     /**
      * @param $currency
+     *
      * @return Rate
+     *
      * @throws \InvalidArgumentException
      */
     public function getRate($currency = 'EUR')
@@ -41,7 +42,7 @@ class Rates implements \IteratorAggregate
         if (array_key_exists($currency, $this->rates)) {
             return $this->rates[$currency];
         } else {
-            throw new \InvalidArgumentException('Kurz pro měnu ' . $currency . ' neexistuje.');
+            throw new \InvalidArgumentException('Kurz pro měnu '.$currency.' neexistuje.');
         }
     }
 
@@ -92,5 +93,4 @@ class Rates implements \IteratorAggregate
     {
         return new \ArrayIterator($this->rates);
     }
-
 }
