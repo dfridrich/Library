@@ -9,6 +9,9 @@ namespace Defr\OpenWeather;
  */
 class Forecast
 {
+    const IMAGE_PNG = "png";
+    const IMAGE_JPG = "jpg";
+
     private $sunset;
     private $sunrise;
     private $city;
@@ -21,6 +24,7 @@ class Forecast
     private $tempMax;
     private $windSpeed;
     private $windDeg;
+    private $image;
 
     /**
      * @param \DateTime $sunset
@@ -35,6 +39,7 @@ class Forecast
      * @param $tempMax
      * @param $windSpeed
      * @param $windDeg
+     * @param $image
      */
     public function __construct(\DateTime $sunset,
                                 \DateTime $sunrise,
@@ -47,7 +52,8 @@ class Forecast
                                 $tempMin,
                                 $tempMax,
                                 $windSpeed,
-                                $windDeg)
+                                $windDeg,
+                                $image)
     {
         $this->sunset = $sunset;
         $this->sunrise = $sunrise;
@@ -61,6 +67,7 @@ class Forecast
         $this->tempMax = $tempMax;
         $this->windSpeed = $windSpeed;
         $this->windDeg = $windDeg;
+        $this->image = $image;
     }
 
     /**
@@ -158,4 +165,46 @@ class Forecast
     {
         return $this->windDeg;
     }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    public function getImage($type = self::IMAGE_JPG)
+    {
+        return $this->image . '.' . $type;
+    }
+
+    /**
+     * @param string $type
+     * @param bool|false $getHtmlTag
+     * @return string
+     */
+    public function getImageBlob($type = self::IMAGE_JPG, $getHtmlTag = false)
+    {
+        $location = sprintf(__DIR__ . "/../../assets/OpenWeather/%s/%s.%s", $type, $this->image, $type);
+        $blob = base64_encode(file_get_contents($location));
+
+        if ($getHtmlTag) {
+            return sprintf(
+                '<img src="data:image/%s;base64,%s" alt="%s" title="%s" class="open-weather-image">',
+                $type,
+                $blob,
+                $this->description,
+                $this->description
+            );
+        } else {
+            return $blob;
+        }
+    }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    public function getImageHtmlTag($type = self::IMAGE_JPG)
+    {
+        return $this->getImageBlob($type, true);
+    }
+
 }
