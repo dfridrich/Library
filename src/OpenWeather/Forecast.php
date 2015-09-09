@@ -183,12 +183,14 @@ class Forecast
     public function getImageBlob($type = self::IMAGE_JPG, $getHtmlTag = false)
     {
         $location = sprintf(__DIR__ . "/../../assets/OpenWeather/%s/%s.%s", $type, $this->image, $type);
-        $blob = base64_encode(file_get_contents($location));
+        $blob = sprintf('data:image/%s;base64,%s',
+            $type,
+            base64_encode(file_get_contents($location))
+        );
 
         if ($getHtmlTag) {
             return sprintf(
-                '<img src="data:image/%s;base64,%s" alt="%s" title="%s" class="open-weather-image">',
-                $type,
+                '<img src="%s" alt="%s" title="%s" class="open-weather-image">',
                 $blob,
                 $this->description,
                 $this->description
