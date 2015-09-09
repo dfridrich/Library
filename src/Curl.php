@@ -3,14 +3,14 @@
 namespace Defr;
 
 /**
- * Class Curl
- * @package Defr
+ * Class Curl.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
  * @see https://github.com/php-curl-class/php-curl-class
  */
 class Curl
 {
-
     const USER_AGENT = 'PHP';
 
     private $_cookies = array();
@@ -65,7 +65,7 @@ class Curl
             $this->curls = array();
 
             foreach ($url_mixed as $url) {
-                $curl = new Curl();
+                $curl = new self();
                 $curl->_multi_child = true;
                 $curl->setOpt(CURLOPT_URL, $this->_buildURL($url, $data), $curl->curl);
                 $curl->setOpt(CURLOPT_HTTPGET, true);
@@ -74,7 +74,7 @@ class Curl
 
                 $curlm_error_code = curl_multi_add_handle($curl_multi, $curl->curl);
                 if (!($curlm_error_code === CURLM_OK)) {
-                    throw new \ErrorException('cURL multi add handle error: ' .
+                    throw new \ErrorException('cURL multi add handle error: '.
                         curl_multi_strerror($curlm_error_code));
                 }
             }
@@ -138,12 +138,12 @@ class Curl
     public function setBasicAuthentication($username, $password)
     {
         $this->setOpt(CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        $this->setOpt(CURLOPT_USERPWD, $username . ':' . $password);
+        $this->setOpt(CURLOPT_USERPWD, $username.':'.$password);
     }
 
     public function setHeader($key, $value)
     {
-        $this->_headers[$key] = $key . ': ' . $value;
+        $this->_headers[$key] = $key.': '.$value;
         $this->setOpt(CURLOPT_HTTPHEADER, array_values($this->_headers));
     }
 
@@ -209,7 +209,7 @@ class Curl
 
     private function _buildURL($url, $data = array())
     {
-        return $url . (empty($data) ? '' : '?' . http_build_query($data));
+        return $url.(empty($data) ? '' : '?'.http_build_query($data));
     }
 
     private function _postfields($data)
@@ -296,7 +296,7 @@ class Curl
 
 function is_array_assoc($array)
 {
-    return (bool)count(array_filter(array_keys($array), 'is_string'));
+    return (bool) count(array_filter(array_keys($array), 'is_string'));
 }
 
 function is_array_multidim($array)
@@ -313,18 +313,18 @@ function http_build_multi_query($data, $key = null)
     $query = array();
 
     if (empty($data)) {
-        return $key . '=';
+        return $key.'=';
     }
 
     $is_array_assoc = is_array_assoc($data);
 
     foreach ($data as $k => $value) {
         if (is_string($value) || is_numeric($value)) {
-            $brackets = $is_array_assoc ? '[' . $k . ']' : '[]';
-            $query[] = urlencode(is_null($key) ? $k : $key . $brackets) . '=' . rawurlencode($value);
+            $brackets = $is_array_assoc ? '['.$k.']' : '[]';
+            $query[] = urlencode(is_null($key) ? $k : $key.$brackets).'='.rawurlencode($value);
         } else {
             if (is_array($value)) {
-                $nested = is_null($key) ? $k : $key . '[' . $k . ']';
+                $nested = is_null($key) ? $k : $key.'['.$k.']';
                 $query[] = http_build_multi_query($value, $nested);
             }
         }

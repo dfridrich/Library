@@ -3,14 +3,12 @@
 namespace Defr;
 
 /**
- * Class CsvImporter
- * @package Defr
+ * Class CsvImporter.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
-
 class CsvImporter
 {
-
     const DELIMITER_SEMICOLON = ';';
     const DELIMITER_TAB = '\t';
     const DELIMITER_COMMA = ',';
@@ -23,13 +21,13 @@ class CsvImporter
 
     /**
      * @param $file_name
-     * @param bool $parse_header
+     * @param bool   $parse_header
      * @param string $delimiter
-     * @param int $length
+     * @param int    $length
      */
-    function __construct($file_name, $parse_header = false, $delimiter = "\t", $length = 8000)
+    public function __construct($file_name, $parse_header = false, $delimiter = "\t", $length = 8000)
     {
-        $this->fp = fopen($file_name, "r");
+        $this->fp = fopen($file_name, 'r');
         $this->parse_header = $parse_header;
         $this->delimiter = $delimiter;
         $this->length = $length;
@@ -38,10 +36,9 @@ class CsvImporter
         if ($this->parse_header) {
             $this->header = fgetcsv($this->fp, $this->length, $this->delimiter);
         }
-
     }
 
-    function __destruct()
+    public function __destruct()
     {
         if ($this->fp) {
             fclose($this->fp);
@@ -50,9 +47,10 @@ class CsvImporter
 
     /**
      * @param int $max_lines
+     *
      * @return array
      */
-    function get($max_lines = 0)
+    public function get($max_lines = 0)
     {
         //if $max_lines is set to 0, then get all the data
 
@@ -75,7 +73,7 @@ class CsvImporter
             }
 
             if ($max_lines > 0) {
-                $line_count++;
+                ++$line_count;
             }
         }
 
@@ -85,5 +83,4 @@ class CsvImporter
             return $data;
         }
     }
-
 }
