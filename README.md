@@ -1,4 +1,4 @@
-Defr Library [![Build Status](https://travis-ci.org/dfridrich/Library.svg)](https://travis-ci.org/dfridrich/Library)
+Defr Library [![Build Status](https://travis-ci.org/dfridrich/Library.svg)](https://travis-ci.org/dfridrich/Library) [![Coverage Status](https://coveralls.io/repos/dfridrich/Library/badge.svg?branch=master&service=github)](https://coveralls.io/github/dfridrich/Library?branch=master)
 ============
 
 My base library includes:
