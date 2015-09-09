@@ -62,7 +62,13 @@ class OpenWeather
             $json->name,
             $json->weather{0}->description,
             $this->getFontAwesomeIcons()[strtolower($json->weather{0}->main)],
-            $json->main->temp);
+            $json->main->temp,
+            $json->main->pressure,
+            $json->main->humidity,
+            $json->main->temp_min,
+            $json->main->temp_max,
+            $json->wind->speed,
+            $json->wind->deg);
 
         return $forecast;
     }

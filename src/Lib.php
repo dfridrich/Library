@@ -992,7 +992,7 @@ class Lib
         // TODO pretty date
     }
 
-/**
+    /**
      * @param $email
      *
      * @return mixed
