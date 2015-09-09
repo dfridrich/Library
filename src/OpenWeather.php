@@ -27,11 +27,11 @@ class OpenWeather
         if ($cacheDir === null) {
             $cacheDir = sys_get_temp_dir();
         }
-        $this->cacheDir = $cacheDir.'/defr';
+        $this->cacheDir = $cacheDir . '/defr';
     }
 
     /**
-     * @param null   $city
+     * @param null $city
      * @param string $lang
      * @param string $units
      *
@@ -40,13 +40,13 @@ class OpenWeather
     public function getForecast($city = null, $lang = 'cz', $units = self::UNITS_METRIC)
     {
         $city = $city == null ? self::DEFAULT_CITY : $city;
-        $cachedFileName = md5(date('YmdH').$city.$lang.$units).'.json';
+        $cachedFileName = md5(date('YmdH') . $city . $lang . $units) . '.json';
 
         if (!is_dir($this->cacheDir)) {
             mkdir($this->cacheDir);
         }
 
-        $cachedFile = $this->cacheDir.'/weather_'.$cachedFileName;
+        $cachedFile = $this->cacheDir . '/weather_' . $cachedFileName;
 
         if (!is_file($cachedFile)) {
             $url = sprintf(self::API_URL, urlencode($city), $lang, $units);
@@ -67,8 +67,10 @@ class OpenWeather
             $json->main->humidity,
             $json->main->temp_min,
             $json->main->temp_max,
-            $json->wind->speed,
-            $json->wind->deg);
+            isset($json->wind->speed) ? $json->wind->speed : null,
+            isset($json->wind->deg) ? $json->wind->deg : null,
+            $this->getWeatherImages()[strtolower($json->weather{0}->main)]
+        );
 
         return $forecast;
     }
@@ -79,13 +81,29 @@ class OpenWeather
     private function getFontAwesomeIcons()
     {
         return [
-            'clear' => 'fa fa-sun-o',
-            'clouds' => 'fa fa-cloud',
-            'mist' => 'fa fa-cloud',
-            'rain' => 'fa fa-tint',
-            'snow' => 'fa fa-empire',
-            'storm' => 'fa fa-flash',
+            'clear'        => 'fa fa-sun-o',
+            'clouds'       => 'fa fa-cloud',
+            'mist'         => 'fa fa-cloud',
+            'rain'         => 'fa fa-tint',
+            'snow'         => 'fa fa-empire',
+            'storm'        => 'fa fa-flash',
             'thunderstorm' => 'fa fa-flash',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getWeatherImages()
+    {
+        return [
+            'clear'        => 'clear',
+            'clouds'       => 'clouds',
+            'mist'         => 'mist',
+            'rain'         => 'rain',
+            'snow'         => 'snow',
+            'storm'        => 'storm',
+            'thunderstorm' => 'thunderstorm',
         ];
     }
 }
