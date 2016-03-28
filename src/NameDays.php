@@ -3,8 +3,8 @@
 namespace Defr;
 
 /**
- * Class NameDays.
- *
+ * Class NameDays
+ * @package Defr
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class NameDays
@@ -12,8 +12,8 @@ class NameDays
     /**
      * @var array
      */
-    private static $data = array(
-        1 => array(
+    private static $data = [
+        1 => [
             1 => '!Nový rok',
             'Karina',
             'Radmila',
@@ -45,8 +45,8 @@ class NameDays
             'Zdislava',
             'Robin',
             'Marika',
-        ),
-        array(
+        ],
+        [
             1 => 'Hynek',
             'Nela',
             'Blažej',
@@ -76,8 +76,8 @@ class NameDays
             'Alexandr',
             'Lumír',
             'Horymír',
-        ),
-        array(
+        ],
+        [
             1 => 'Bedřich',
             'Anežka',
             'Kamil',
@@ -109,8 +109,8 @@ class NameDays
             'Taťána',
             'Arnošt',
             'Kvido',
-        ),
-        array(
+        ],
+        [
             1 => 'Hugo',
             'Erika',
             'Richard',
@@ -141,8 +141,8 @@ class NameDays
             'Vlastislav',
             'Robert',
             'Blahoslav',
-        ),
-        array(
+        ],
+        [
             1 => '!Svátek práce',
             'Zikmund',
             'Alexej',
@@ -174,8 +174,8 @@ class NameDays
             'Maxmilián',
             'Ferdinand',
             'Kamila',
-        ),
-        array(
+        ],
+        [
             1 => 'Laura',
             'Jarmil',
             'Tamara',
@@ -206,8 +206,8 @@ class NameDays
             'Lubomír',
             'Petr/Pavel',
             'Šárka',
-        ),
-        array(
+        ],
+        [
             1 => 'Jaroslava',
             'Patricie',
             'Radomír',
@@ -239,8 +239,8 @@ class NameDays
             'Marta',
             'Bořivoj',
             'Ignác',
-        ),
-        array(
+        ],
+        [
             1 => 'Oskar',
             'Gustav',
             'Miluše',
@@ -272,8 +272,8 @@ class NameDays
             'Evelína',
             'Vladěna',
             'Pavlína',
-        ),
-        array(
+        ],
+        [
             1 => 'Linda/Samuel',
             'Adéla',
             'Bronislav',
@@ -304,8 +304,8 @@ class NameDays
             'Václav',
             'Michal',
             'Jeroným',
-        ),
-        array(
+        ],
+        [
             1 => 'Igor',
             'Olívie/Oliver',
             'Bohumil',
@@ -337,8 +337,8 @@ class NameDays
             'Silvie',
             'Tadeáš',
             'Štěpánka',
-        ),
-        array(
+        ],
+        [
             1 => 'Felix',
             '!Památka zesnulých',
             'Hubert',
@@ -369,8 +369,8 @@ class NameDays
             'René',
             'Zina',
             'Ondřej',
-        ),
-        array(
+        ],
+        [
             1 => 'Iva',
             'Blanka',
             'Svatoslav',
@@ -402,8 +402,8 @@ class NameDays
             'Judita',
             'David',
             'Silvestr',
-        ),
-    );
+        ],
+    ];
 
     /**
      * @param \DateTime $date
@@ -423,5 +423,38 @@ class NameDays
         }
 
         return $return;
+    }
+
+    /**
+     * @param $name
+     * @return \DateTime|null
+     */
+    public static function getNameDate($name)
+    {
+        $matches = [];
+        for ($i = 1; $i <= 12; $i++) {
+            foreach (self::$data[$i] as $day => $value) {
+                $check = mb_stripos($value, $name);
+                if (false !== $check) {
+                    $matches[] = [$i, $day, $value, levenshtein($name, $value)];
+                }
+            }
+        }
+
+        usort(
+            $matches,
+            function ($a, $b) {
+                return $a[3] > $b[3];
+            }
+        );
+
+        if (count($matches) == 0) {
+            return null;
+        }
+
+        $date = new \DateTime();
+        $date->setDate(0, $matches[0][0], $matches[0][1]);
+
+        return $date;
     }
 }
