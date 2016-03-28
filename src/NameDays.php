@@ -453,7 +453,7 @@ class NameDays
         }
 
         $date = new \DateTime();
-        $date->setDate(0, $matches[0][0], $matches[0][1]);
+        $date->setDate(date("Y"), $matches[0][0], $matches[0][1]);
 
         return $date;
     }
