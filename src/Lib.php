@@ -21,7 +21,7 @@ class Lib
      *
      * @var array
      */
-    protected $_data = array();
+    protected $_data = [];
 
     /**
      * Vrati instanci Lib.
@@ -44,7 +44,11 @@ class Lib
      */
     public static function getIp()
     {
-        return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) && $_SERVER["HTTP_X_FORWARDED_FOR"] != "") {
+            return $_SERVER["HTTP_X_FORWARDED_FOR"];
+        } else {
+            return $_SERVER["REMOTE_ADDR"];
+        }
     }
 
     /**
@@ -104,7 +108,7 @@ class Lib
             }
 
             // finally get the correct version number
-            $known = array('Version', $ub, 'other');
+            $known = ['Version', $ub, 'other'];
             $pattern = '#(?<browser>'.implode('|', $known).')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
             if (!preg_match_all($pattern, $u_agent, $matches)) {
                 // we have no matching number just continue
@@ -132,31 +136,31 @@ class Lib
             if ($string) {
                 return $bname.' '.$version.' ('.ucfirst($platform).')';
             } else {
-                return array(
+                return [
                     'userAgent' => $u_agent,
-                    'name' => $bname,
-                    'version' => $version,
-                    'platform' => $platform,
-                    'pattern' => $pattern,
-                );
+                    'name'      => $bname,
+                    'version'   => $version,
+                    'platform'  => $platform,
+                    'pattern'   => $pattern,
+                ];
             }
         } else {
             if ($string) {
                 return;
             } else {
-                return array(
+                return [
                     'userAgent' => null,
-                    'name' => null,
-                    'version' => null,
-                    'platform' => null,
-                    'pattern' => null,
-                );
+                    'name'      => null,
+                    'version'   => null,
+                    'platform'  => null,
+                    'pattern'   => null,
+                ];
             }
         }
     }
 
     /**
-     * @param int  $length
+     * @param int $length
      * @param bool $safeChars
      *
      * @return string
@@ -170,7 +174,7 @@ class Lib
         $keys = array_merge(range(0, 9), range('a', 'z'));
 
         if ($safeChars) {
-            $keys = array_diff($keys, array('0', '1', 'i', 'l', 'o'));
+            $keys = array_diff($keys, ['0', '1', 'i', 'l', 'o']);
         }
 
         for ($i = 0; $i < $length; ++$i) {
@@ -181,7 +185,7 @@ class Lib
     }
 
     /**
-     * @param int  $lenght
+     * @param int $lenght
      * @param bool $safeChars
      *
      * @return string
@@ -193,8 +197,8 @@ class Lib
 
     /**
      * @param $string
-     * @param int  $length
-     * @param int  $start
+     * @param int $length
+     * @param int $start
      * @param bool $ellipsis
      *
      * @return string
@@ -332,7 +336,7 @@ class Lib
     public static function stripDiacritics($string)
     {
         $string = str_replace(
-            array(
+            [
                 'ě',
                 'š',
                 'č',
@@ -366,8 +370,8 @@ class Lib
                 'ů',
                 'ű',
                 'ü',
-            ),
-            array(
+            ],
+            [
                 'e',
                 's',
                 'c',
@@ -401,11 +405,11 @@ class Lib
                 'u',
                 'u',
                 'u',
-            ),
+            ],
             $string
         );
         $string = str_replace(
-            array(
+            [
                 'Ě',
                 'Š',
                 'Č',
@@ -427,8 +431,8 @@ class Lib
                 'Ë',
                 'Ö',
                 'Ü',
-            ),
-            array(
+            ],
+            [
                 'E',
                 'S',
                 'C',
@@ -450,7 +454,7 @@ class Lib
                 'E',
                 'O',
                 'U',
-            ),
+            ],
             $string
         );
 
@@ -467,7 +471,7 @@ class Lib
      * 0-9, a-z, A-Z, -
      *
      * @param string $string
-     * @param bool   $capitalize
+     * @param bool $capitalize
      *
      * @return string
      */
@@ -515,12 +519,12 @@ class Lib
             }
         }
 
-        return array(
+        return [
             trim($pretitle),
             ucwords(trim(strtolower($first_name))),
             ucwords(trim(strtolower($last_name))),
             trim($posttitle),
-        );
+        ];
     }
 
     /**
@@ -553,7 +557,7 @@ class Lib
         $x = substr($data, 0, 4);
         $y = substr($data, 0, 4);
 
-        return array(hexdec($x), hexdec($y));
+        return [hexdec($x), hexdec($y)];
     }
 
     /**
@@ -566,7 +570,7 @@ class Lib
     public static function identifyImage($filename)
     {
         $dpi = self::getImageDpi($filename);
-        $data = array();
+        $data = [];
         $data['dpi_x'] = $dpi[0];
         $data['dpi_y'] = $dpi[1];
 
@@ -662,8 +666,8 @@ class Lib
      */
     public static function aasort(&$array, $key)
     {
-        $sorter = array();
-        $ret = array();
+        $sorter = [];
+        $ret = [];
         reset($array);
         foreach ($array as $ii => $va) {
             $sorter[$ii] = $va[$key];
@@ -682,7 +686,7 @@ class Lib
      */
     public static function normalizeKeywords($string)
     {
-        $out = array();
+        $out = [];
         // Jen pismena, cisla
         $string = preg_replace('/[^0-9a-zA-Z-]/i', ' ', self::stripDiacritics($string));
         // Vice mezer dame pryc
@@ -722,7 +726,7 @@ class Lib
      */
     public static function roundPrice($price)
     {
-        return (float) number_format($price, 2, '.', '');
+        return (float)number_format($price, 2, '.', '');
     }
 
     /**
@@ -733,7 +737,7 @@ class Lib
      */
     public static function round($number, $decimals = 2)
     {
-        return (float) number_format($number, $decimals, '.', '');
+        return (float)number_format($number, $decimals, '.', '');
     }
 
     /**
@@ -845,7 +849,7 @@ class Lib
      * @param $amount
      * @param $variableSymbol
      * @param string $message
-     * @param int    $size
+     * @param int $size
      *
      * @return string
      */
@@ -853,7 +857,7 @@ class Lib
     {
         $account = explode('/', $account);
         $url = 'http://api.paylibo.com/paylibo/generator/czech/image?'
-            .'accountNumber='.str_replace(array(' ', '-'), '', $account[0])
+            .'accountNumber='.str_replace([' ', '-'], '', $account[0])
             .'&bankCode='.$account[1]
             .'&amount='.number_format($amount, 2, '.', '')
             .'&message='.urlencode($message)
@@ -874,7 +878,9 @@ class Lib
     public static function dirSize($directory)
     {
         $size = 0;
-        foreach (new \RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory, \FilesystemIterator::KEY_AS_PATHNAME)) as $file) {
+        foreach (new \RecursiveIteratorIterator(
+                     new RecursiveDirectoryIterator($directory, \FilesystemIterator::KEY_AS_PATHNAME)
+                 ) as $file) {
             $size += $file->getSize();
         }
 
@@ -886,10 +892,10 @@ class Lib
      */
     public static function getMaxUploadSize()
     {
-        return array(
+        return [
             str_replace('M', ' MB', ini_get('upload_max_filesize')),
             str_replace('M', ' MB', ini_get('post_max_size')),
-        );
+        ];
     }
 
     /**
@@ -899,7 +905,7 @@ class Lib
      */
     public static function toggleBoolean($value)
     {
-        return (bool) $value ? false : true;
+        return (bool)$value ? false : true;
     }
 
     /**
@@ -910,7 +916,7 @@ class Lib
      */
     public static function getChanges(array $new, array $previous)
     {
-        $changes = array();
+        $changes = [];
         $changedKeys = array_keys(array_diff_assoc($new, $previous));
         foreach ($changedKeys as $key) {
             $changes[$key] = isset($previous[$key]) ? [$previous[$key], $new[$key]] : $new[$key];
@@ -934,7 +940,7 @@ class Lib
             $hash = '#';
         }
         /// HEX TO RGB
-        $rgb = array(hexdec(substr($hex, 0, 2)), hexdec(substr($hex, 2, 2)), hexdec(substr($hex, 4, 2)));
+        $rgb = [hexdec(substr($hex, 0, 2)), hexdec(substr($hex, 2, 2)), hexdec(substr($hex, 4, 2))];
         //// CALCULATE
         for ($i = 0; $i < 3; ++$i) {
             // See if brighter or darker
@@ -1001,88 +1007,4 @@ class Lib
     {
         return !filter_var($email, FILTER_VALIDATE_EMAIL) ? false : true;
     }
-    
-    /**
-     * Overeni rodneho cisla.
-     * 
-     * @see https://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
-     * @param $rc
-     * @return bool
-     */
-    public static function verifyRC($rc)
-    {
-        // be liberal in what you receive
-        if (!preg_match('#^\s*(\d\d)(\d\d)(\d\d)[ /]*(\d\d\d)(\d?)\s*$#', $rc, $matches)) {
-            return false;
-        }
-
-        list(, $year, $month, $day, $ext, $c) = $matches;
-
-        if ($c === '') {
-            $year += $year < 54 ? 1900 : 1800;
-        } else {
-            // kontrolní číslice
-            $mod = ($year . $month . $day . $ext) % 11;
-            if ($mod === 10) {
-                $mod = 0;
-            }
-            if ($mod !== (int)$c) {
-                return false;
-            }
-
-            $year += $year < 54 ? 2000 : 1900;
-        }
-
-        // k měsíci může být připočteno 20, 50 nebo 70
-        if ($month > 70 && $year > 2003) {
-            $month -= 70;
-        } elseif ($month > 50) {
-            $month -= 50;
-        } elseif ($month > 20 && $year > 2003) {
-            $month -= 20;
-        }
-
-        // kontrola data
-        if (!checkdate($month, $day, $year)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Overeni ICa.
-     * 
-     * @see https://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
-     * @param $ic
-     * @return bool
-     */
-    public static function verifyIC($ic)
-    {
-        // be liberal in what you receive
-        $ic = preg_replace('#\s+#', '', $ic);
-
-        // má požadovaný tvar?
-        if (!preg_match('#^\d{8}$#', $ic)) {
-            return false;
-        }
-
-        // kontrolní součet
-        $a = 0;
-        for ($i = 0; $i < 7; $i++) {
-            $a += $ic[$i] * (8 - $i);
-        }
-
-        $a = $a % 11;
-        if ($a === 0) {
-            $c = 1;
-        } elseif ($a === 1) {
-            $c = 0;
-        } else {
-            $c = 11 - $a;
-        }
-
-        return (int)$ic[7] === $c;
-    }
-    
 }
