@@ -1007,4 +1007,27 @@ class Lib
     {
         return !filter_var($email, FILTER_VALIDATE_EMAIL) ? false : true;
     }
+
+    /**
+     * @return string
+     */
+    function greetUser()
+    {
+        $time = date("H");
+        if ($time < "12") {
+            return "good_morning";
+        } else {
+            if ($time >= "12" && $time < "17") {
+                return "good_afternoon";
+            } else {
+                if ($time >= "17" && $time < "19") {
+                    return "good_evening";
+                } else {
+                    if ($time >= "19") {
+                        return "good_night";
+                    }
+                }
+            }
+        }
+    }
 }
