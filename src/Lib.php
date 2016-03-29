@@ -1011,23 +1011,23 @@ class Lib
     /**
      * @return string
      */
-    function greetUser()
+    public static function greetUser()
     {
         $time = date("H");
-        if ($time < "12") {
+        if ($time < "6") {
+            return "good_early_morning";
+        } elseif ($time < "9") {
             return "good_morning";
+        } elseif ($time < "12") {
+            return "good_forenoon";
+        } elseif ($time == "12") {
+            return "good_noon";
+        } elseif ($time < "19") {
+            return "good_afternoon";
+        } elseif ($time < "22") {
+            return "good_evening";
         } else {
-            if ($time >= "12" && $time < "17") {
-                return "good_afternoon";
-            } else {
-                if ($time >= "17" && $time < "19") {
-                    return "good_evening";
-                } else {
-                    if ($time >= "19") {
-                        return "good_night";
-                    }
-                }
-            }
+            return "good_night";
         }
     }
 }
