@@ -5,6 +5,7 @@
 [![License](https://poser.pugx.org/dfridrich/library/license)](https://packagist.org/packages/dfridrich/library)
 [![Build Status](https://travis-ci.org/dfridrich/Library.svg)](https://travis-ci.org/dfridrich/Library) 
 
+Many useful PHP helpers in one Library.
 
 ## What Library includes
 
