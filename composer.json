@@ -1,7 +1,7 @@
 {
     "name": "dfridrich/library",
     "type": "library",
-    "description": "My base library :-)",
+    "description": "Many useful PHP helpers in one Library.",
     "keywords": ["php", "library"],
     "homepage": "https://github.com/dfridrich/DefrAresBundle",
     "license": "MIT",
