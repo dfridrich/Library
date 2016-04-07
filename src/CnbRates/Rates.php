@@ -3,8 +3,8 @@
 namespace Defr\CnbRates;
 
 /**
- * Class Rates.
- *
+ * Class Rates
+ * @package Defr\CnbRates
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Rates implements \IteratorAggregate

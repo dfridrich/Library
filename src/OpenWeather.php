@@ -5,13 +5,13 @@ namespace Defr;
 use Defr\OpenWeather\Forecast;
 
 /**
- * Class OpenWeather.
- *
+ * Class OpenWeather
+ * @package Defr
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class OpenWeather
 {
-    const API_URL = 'http://api.openweathermap.org/data/2.5/weather?q=%s&lang=%s&units=%s';
+    const API_URL = 'http://api.openweathermap.org/data/2.5/weather?q=%s&lang=%s&units=%s&appid=%s';
     const DEFAULT_CITY = 'Prague, CZ';
 
     const UNITS_METRIC = 'metric';
@@ -19,15 +19,19 @@ class OpenWeather
 
     private $cacheDir;
 
+    private $apiKey;
+
     /**
      * @param null $cacheDir
+     * @param null $apiKey
      */
-    public function __construct($cacheDir = null)
+    public function __construct($cacheDir = null, $apiKey = null)
     {
         if ($cacheDir === null) {
             $cacheDir = sys_get_temp_dir();
         }
-        $this->cacheDir = $cacheDir . '/defr';
+        $this->cacheDir = $cacheDir.'/defr';
+        $this->apiKey = $apiKey;
     }
 
     /**
@@ -40,16 +44,16 @@ class OpenWeather
     public function getForecast($city = null, $lang = 'cz', $units = self::UNITS_METRIC)
     {
         $city = $city == null ? self::DEFAULT_CITY : $city;
-        $cachedFileName = md5(date('YmdH') . $city . $lang . $units) . '.json';
+        $cachedFileName = md5(date('YmdH').$city.$lang.$units).'.json';
 
         if (!is_dir($this->cacheDir)) {
             mkdir($this->cacheDir);
         }
 
-        $cachedFile = $this->cacheDir . '/weather_' . $cachedFileName;
+        $cachedFile = $this->cacheDir.'/weather_'.$cachedFileName;
 
         if (!is_file($cachedFile)) {
-            $url = sprintf(self::API_URL, urlencode($city), $lang, $units);
+            $url = sprintf(self::API_URL, urlencode($city), $lang, $units, $this->apiKey);
             $json = json_decode(file_get_contents($url));
             file_put_contents($cachedFile, json_encode($json, JSON_PRETTY_PRINT));
         } else {

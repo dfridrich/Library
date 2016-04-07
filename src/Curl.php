@@ -3,19 +3,18 @@
 namespace Defr;
 
 /**
- * Class Curl.
- *
+ * Class Curl
+ * @package Defr
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
- *
  * @see https://github.com/php-curl-class/php-curl-class
  */
 class Curl
 {
     const USER_AGENT = 'PHP';
 
-    private $_cookies = array();
-    private $_headers = array();
-    private $_options = array();
+    private $_cookies = [];
+    private $_headers = [];
+    private $_options = [];
 
     private $_multi_parent = false;
     private $_multi_child = false;
@@ -25,6 +24,10 @@ class Curl
     private $_complete = null;
 
     public $curl;
+
+    /**
+     * @var self[]
+     */
     public $curls;
 
     public $error = false;
@@ -56,13 +59,19 @@ class Curl
         $this->setOpt(CURLOPT_RETURNTRANSFER, true);
     }
 
-    public function get($url_mixed, $data = array())
+    /**
+     * @param $url_mixed
+     * @param array $data
+     * @return int|mixed|null
+     * @throws \ErrorException
+     */
+    public function get($url_mixed, $data = [])
     {
         if (is_array($url_mixed)) {
             $curl_multi = curl_multi_init();
             $this->_multi_parent = true;
 
-            $this->curls = array();
+            $this->curls = [];
 
             foreach ($url_mixed as $url) {
                 $curl = new self();
@@ -74,8 +83,10 @@ class Curl
 
                 $curlm_error_code = curl_multi_add_handle($curl_multi, $curl->curl);
                 if (!($curlm_error_code === CURLM_OK)) {
-                    throw new \ErrorException('cURL multi add handle error: '.
-                        curl_multi_strerror($curlm_error_code));
+                    throw new \ErrorException(
+                        'cURL multi add handle error: '.
+                        curl_multi_strerror($curlm_error_code)
+                    );
                 }
             }
 
@@ -98,9 +109,16 @@ class Curl
 
             return $this->exec();
         }
+
+        return null;
     }
 
-    public function post($url, $data = array())
+    /**
+     * @param $url
+     * @param array $data
+     * @return int|mixed
+     */
+    public function post($url, $data = [])
     {
         $this->setOpt(CURLOPT_URL, $this->_buildURL($url));
         $this->setOpt(CURLOPT_POST, true);
@@ -109,7 +127,12 @@ class Curl
         return $this->exec();
     }
 
-    public function put($url, $data = array())
+    /**
+     * @param $url
+     * @param array $data
+     * @return int|mixed
+     */
+    public function put($url, $data = [])
     {
         $this->setOpt(CURLOPT_URL, $url);
         $this->setOpt(CURLOPT_CUSTOMREQUEST, 'PUT');
@@ -118,7 +141,12 @@ class Curl
         return $this->exec();
     }
 
-    public function patch($url, $data = array())
+    /**
+     * @param $url
+     * @param array $data
+     * @return int|mixed
+     */
+    public function patch($url, $data = [])
     {
         $this->setOpt(CURLOPT_URL, $this->_buildURL($url));
         $this->setOpt(CURLOPT_CUSTOMREQUEST, 'PATCH');
@@ -127,7 +155,12 @@ class Curl
         return $this->exec();
     }
 
-    public function delete($url, $data = array())
+    /**
+     * @param $url
+     * @param array $data
+     * @return int|mixed
+     */
+    public function delete($url, $data = [])
     {
         $this->setOpt(CURLOPT_URL, $this->_buildURL($url, $data));
         $this->setOpt(CURLOPT_CUSTOMREQUEST, 'DELETE');
@@ -135,34 +168,58 @@ class Curl
         return $this->exec();
     }
 
+    /**
+     * @param $username
+     * @param $password
+     */
     public function setBasicAuthentication($username, $password)
     {
         $this->setOpt(CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         $this->setOpt(CURLOPT_USERPWD, $username.':'.$password);
     }
 
+    /**
+     * @param $key
+     * @param $value
+     */
     public function setHeader($key, $value)
     {
         $this->_headers[$key] = $key.': '.$value;
         $this->setOpt(CURLOPT_HTTPHEADER, array_values($this->_headers));
     }
 
+    /**
+     * @param $user_agent
+     */
     public function setUserAgent($user_agent)
     {
         $this->setOpt(CURLOPT_USERAGENT, $user_agent);
     }
 
+    /**
+     * @param $referrer
+     */
     public function setReferrer($referrer)
     {
         $this->setOpt(CURLOPT_REFERER, $referrer);
     }
 
+    /**
+     * @param $key
+     * @param $value
+     */
     public function setCookie($key, $value)
     {
         $this->_cookies[$key] = $value;
         $this->setOpt(CURLOPT_COOKIE, http_build_query($this->_cookies, '', '; '));
     }
 
+    /**
+     * @param $option
+     * @param $value
+     * @param null $_ch
+     * @return bool
+     */
     public function setOpt($option, $value, $_ch = null)
     {
         $ch = is_null($_ch) ? $this->curl : $_ch;
@@ -171,6 +228,9 @@ class Curl
         return curl_setopt($ch, $option, $value);
     }
 
+    /**
+     * @param bool $on
+     */
     public function verbose($on = true)
     {
         $this->setOpt(CURLOPT_VERBOSE, $on);
@@ -187,36 +247,57 @@ class Curl
         curl_close($this->curl);
     }
 
+    /**
+     * @param $function
+     */
     public function beforeSend($function)
     {
         $this->_before_send = $function;
     }
 
+    /**
+     * @param $callback
+     */
     public function success($callback)
     {
         $this->_success = $callback;
     }
 
+    /**
+     * @param $callback
+     */
     public function error($callback)
     {
         $this->_error = $callback;
     }
 
+    /**
+     * @param $callback
+     */
     public function complete($callback)
     {
         $this->_complete = $callback;
     }
 
-    private function _buildURL($url, $data = array())
+    /**
+     * @param $url
+     * @param array $data
+     * @return string
+     */
+    private function _buildURL($url, $data = [])
     {
         return $url.(empty($data) ? '' : '?'.http_build_query($data));
     }
 
+    /**
+     * @param $data
+     * @return array|string
+     */
     private function _postfields($data)
     {
         if (is_array($data)) {
-            if (is_array_multidim($data)) {
-                $data = http_build_multi_query($data);
+            if ($this->is_array_multidim($data)) {
+                $data = $this->http_build_multi_query($data);
             } else {
                 // Fix "Notice: Array to string conversion" when $value in
                 // curl_setopt($ch, CURLOPT_POSTFIELDS, $value) is an array
@@ -232,6 +313,10 @@ class Curl
         return $data;
     }
 
+    /**
+     * @param null $_ch
+     * @return int|mixed
+     */
     protected function exec($_ch = null)
     {
         $ch = is_null($_ch) ? $this : $_ch;
@@ -246,7 +331,7 @@ class Curl
         $ch->curl_error_message = curl_error($ch->curl);
         $ch->curl_error = !($ch->curl_error_code === 0);
         $ch->http_status_code = curl_getinfo($ch->curl, CURLINFO_HTTP_CODE);
-        $ch->http_error = in_array(floor($ch->http_status_code / 100), array(4, 5));
+        $ch->http_error = in_array(floor($ch->http_status_code / 100), [4, 5]);
         $ch->error = $ch->curl_error || $ch->http_error;
         $ch->error_code = $ch->error ? ($ch->curl_error ? $ch->curl_error_code : $ch->http_status_code) : 0;
 
@@ -279,6 +364,9 @@ class Curl
         return $ch->error_code;
     }
 
+    /**
+     * @param $function
+     */
     private function _call($function)
     {
         if (is_callable($function)) {
@@ -292,43 +380,56 @@ class Curl
     {
         $this->close();
     }
-}
 
-function is_array_assoc($array)
-{
-    return (bool) count(array_filter(array_keys($array), 'is_string'));
-}
-
-function is_array_multidim($array)
-{
-    if (!is_array($array)) {
-        return false;
+    /**
+     * @param $array
+     * @return bool
+     */
+    protected function is_array_assoc($array)
+    {
+        return (bool)count(array_filter(array_keys($array), 'is_string'));
     }
 
-    return !(count($array) === count($array, COUNT_RECURSIVE));
-}
+    /**
+     * @param $array
+     * @return bool
+     */
+    protected function is_array_multidim($array)
+    {
+        if (!is_array($array)) {
+            return false;
+        }
 
-function http_build_multi_query($data, $key = null)
-{
-    $query = array();
-
-    if (empty($data)) {
-        return $key.'=';
+        return !(count($array) === count($array, COUNT_RECURSIVE));
     }
 
-    $is_array_assoc = is_array_assoc($data);
+    /**
+     * @param $data
+     * @param null $key
+     * @return string
+     */
+    protected function http_build_multi_query($data, $key = null)
+    {
+        $query = [];
 
-    foreach ($data as $k => $value) {
-        if (is_string($value) || is_numeric($value)) {
-            $brackets = $is_array_assoc ? '['.$k.']' : '[]';
-            $query[] = urlencode(is_null($key) ? $k : $key.$brackets).'='.rawurlencode($value);
-        } else {
-            if (is_array($value)) {
-                $nested = is_null($key) ? $k : $key.'['.$k.']';
-                $query[] = http_build_multi_query($value, $nested);
+        if (empty($data)) {
+            return $key.'=';
+        }
+
+        $is_array_assoc = $this->is_array_assoc($data);
+
+        foreach ($data as $k => $value) {
+            if (is_string($value) || is_numeric($value)) {
+                $brackets = $is_array_assoc ? '['.$k.']' : '[]';
+                $query[] = urlencode(is_null($key) ? $k : $key.$brackets).'='.rawurlencode($value);
+            } else {
+                if (is_array($value)) {
+                    $nested = is_null($key) ? $k : $key.'['.$k.']';
+                    $query[] = $this->http_build_multi_query($value, $nested);
+                }
             }
         }
-    }
 
-    return implode('&', $query);
+        return implode('&', $query);
+    }
 }

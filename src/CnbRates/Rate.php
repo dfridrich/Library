@@ -3,8 +3,8 @@
 namespace Defr\CnbRates;
 
 /**
- * Class Rate.
- *
+ * Class Rate
+ * @package Defr\CnbRates
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Rate

@@ -3,8 +3,8 @@
 namespace Defr\OpenWeather;
 
 /**
- * Class Forecast.
- *
+ * Class Forecast
+ * @package Defr\OpenWeather
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Forecast
@@ -208,5 +208,4 @@ class Forecast
     {
         return $this->getImageBlob($type, true);
     }
-
 }

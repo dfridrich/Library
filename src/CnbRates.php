@@ -6,8 +6,8 @@ use Defr\CnbRates\Rate;
 use Defr\CnbRates\Rates;
 
 /**
- * Class OpenWeather.
- *
+ * Class CnbRates
+ * @package Defr
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class CnbRates
@@ -41,9 +41,7 @@ class CnbRates
             $date = new \DateTime();
         }
 
-        /*
-         * Pokud je pozadan kurz pro dnesni den a jeste nebylo 14:15 zverejnim vcerejsi kurz
-         */
+        // Pokud je pozadan kurz pro dnesni den a jeste nebylo 14:15 zverejnim vcerejsi kurz
         if ($date->format('Hi') < 1415) {
             $date->modify('-1 day');
         }
@@ -73,12 +71,14 @@ class CnbRates
                 }
                 $rate = explode('|', $line);
 
-                $rates[$rate[3]] = new Rate($date,
+                $rates[$rate[3]] = new Rate(
+                    $date,
                     $rate[3],
                     $rate[0],
                     $rate[1],
                     Lib::toNumber($rate[2]),
-                    Lib::toNumber($rate[4]));
+                    Lib::toNumber($rate[4])
+                );
             }
             file_put_contents($cachedFile, serialize($rates));
         } else {

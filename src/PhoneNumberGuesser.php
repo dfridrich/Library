@@ -3,8 +3,8 @@
 namespace Defr;
 
 /**
- * Class PhoneNumberGuesser.
- *
+ * Class PhoneNumberGuesser
+ * @package Defr
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class PhoneNumberGuesser

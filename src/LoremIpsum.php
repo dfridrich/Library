@@ -399,7 +399,7 @@ class LoremIpsum
         $total = count($sentences);
 
         $paragraphs = array();
-        $pCount = 0;
+//        $pCount = 0;
         $currCount = 0;
         $curr = array();
 
@@ -480,10 +480,11 @@ class LoremIpsum
         return trim($new_string);
     }
 
-    /*
-    * Inserts commas and periods in the given
-    * word array.
-    */
+    /**
+     * Inserts commas and periods in the given word array.
+     * @param $sentence
+     * @return mixed|null
+     */
     private function punctuate(&$sentence)
     {
         $count = count($sentence);
@@ -502,6 +503,8 @@ class LoremIpsum
                 $sentence[$index] = $sentence[$index].',';
             }
         }
+
+        return null;
     }
 
     /*
@@ -552,7 +555,7 @@ class LoremIpsum
 
         // two independent variables with normal distribution N(0,1)
         $u = sqrt(-2 * log($x)) * cos(2 * pi() * $y);
-        $v = sqrt(-2 * log($x)) * sin(2 * pi() * $y);
+//        $v = sqrt(-2 * log($x)) * sin(2 * pi() * $y);
 
         // i will return only one, couse only one needed
         return $u;

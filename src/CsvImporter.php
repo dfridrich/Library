@@ -3,8 +3,8 @@
 namespace Defr;
 
 /**
- * Class CsvImporter.
- *
+ * Class CsvImporter
+ * @package Defr
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class CsvImporter
@@ -64,6 +64,7 @@ class CsvImporter
 
         while ($line_count < $max_lines && ($row = fgetcsv($this->fp, $this->length, $this->delimiter)) !== false) {
             if ($this->parse_header) {
+                $row_new = null;
                 foreach ($this->header as $i => $heading_i) {
                     $row_new[$heading_i] = $row[$i];
                 }

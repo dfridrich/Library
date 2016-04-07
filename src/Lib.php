@@ -5,7 +5,9 @@ namespace Defr;
 use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
 
 /**
- * Zakladni funkce pro praci s aplikaci.
+ * Class Lib
+ * @package Defr
+ * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Lib
 {
@@ -30,11 +32,11 @@ class Lib
      */
     public static function getInstance()
     {
-        if (self::$_instance === null) {
-            self::$_instance = new self();
+        if (static::$_instance === null) {
+            static::$_instance = new self();
         }
 
-        return self::$_instance;
+        return static::$_instance;
     }
 
     /**
@@ -58,21 +60,20 @@ class Lib
      */
     public static function getHost()
     {
-        return self::getIp() ? gethostbyaddr(self::getIp()) : null;
+        return static::getIp() ? gethostbyaddr(static::getIp()) : null;
     }
 
     /**
      * @param bool $string
-     *
      * @return array|null|string
      */
     public static function getBrowser($string = true)
     {
         if (isset($_SERVER['HTTP_USER_AGENT'])) {
             $u_agent = $_SERVER['HTTP_USER_AGENT'];
-            $bname = 'Unknown';
+//            $bname = 'Unknown';
             $platform = 'Unknown';
-            $version = '';
+//            $version = '';
 
             //First get the platform?
             if (preg_match('/linux/i', $u_agent)) {
@@ -146,7 +147,7 @@ class Lib
             }
         } else {
             if ($string) {
-                return;
+                return null;
             } else {
                 return [
                     'userAgent' => null,
@@ -192,7 +193,7 @@ class Lib
      */
     public static function generateRandomString($lenght = 40, $safeChars = false)
     {
-        return self::generateShortLink($lenght, $safeChars);
+        return static::generateShortLink($lenght, $safeChars);
     }
 
     /**
@@ -477,7 +478,7 @@ class Lib
      */
     public static function idize($string, $capitalize = false)
     {
-        $string = strtolower(self::stripDiacritics($string));
+        $string = strtolower(static::stripDiacritics($string));
 
         $string = preg_replace('/[^0-9a-zA-Z-]/i', '-', $string);
         $string = preg_replace('/(-+)/i', '-', $string);
@@ -536,7 +537,7 @@ class Lib
      */
     public static function getShortName($name)
     {
-        $name = self::parseName($name);
+        $name = static::parseName($name);
 
         return substr($name[1], 0, 1).'. '.$name[2];
     }
@@ -569,7 +570,7 @@ class Lib
      */
     public static function identifyImage($filename)
     {
-        $dpi = self::getImageDpi($filename);
+        $dpi = static::getImageDpi($filename);
         $data = [];
         $data['dpi_x'] = $dpi[0];
         $data['dpi_y'] = $dpi[1];
@@ -688,7 +689,7 @@ class Lib
     {
         $out = [];
         // Jen pismena, cisla
-        $string = preg_replace('/[^0-9a-zA-Z-]/i', ' ', self::stripDiacritics($string));
+        $string = preg_replace('/[^0-9a-zA-Z-]/i', ' ', static::stripDiacritics($string));
         // Vice mezer dame pryc
         $string = preg_replace("/\s+/", ' ', $string);
         $string = explode(' ', $string);
@@ -748,7 +749,7 @@ class Lib
      */
     public static function getPriceWithoutVat($price, $vat)
     {
-        return self::roundPrice($price / (1 + $vat / 100));
+        return static::roundPrice($price / (1 + $vat / 100));
     }
 
     /**
@@ -759,7 +760,7 @@ class Lib
      */
     public static function getPriceWithVat($price, $vat)
     {
-        return self::roundPrice($price * (1 + $vat / 100));
+        return static::roundPrice($price * (1 + $vat / 100));
     }
 
     /**
@@ -770,7 +771,7 @@ class Lib
      */
     public static function getVatFromPrice($price, $vat)
     {
-        return self::roundPrice($price * self::getVatCoefficient($vat));
+        return static::roundPrice($price * static::getVatCoefficient($vat));
     }
 
     /**
@@ -812,15 +813,13 @@ class Lib
      */
     public static function countMaxPrintSize($origDpi, $minDpi, $origW)
     {
-        // TODO
-        return self::round(($origW / $minDpi) * 2.54, 1);
+        return static::round(($origW / $minDpi) * 2.54, 1);
     }
 
     /**
      * @param $count
      * @param $words
-     *
-     * @return string
+     * @return null|string
      */
     public static function declinationFromArray($count, $words)
     {
@@ -831,6 +830,8 @@ class Lib
         } elseif ($count >= 2 && $count <= 4) {
             return $count.' '.$words[2];
         }
+
+        return null;
     }
 
     /**

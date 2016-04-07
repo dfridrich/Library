@@ -15,4 +15,8 @@
             <directory>./src</directory>
         </whitelist>
     </filter>
+
+    <php>
+        <env name="WEATHER_API"/>
+    </php>
 </phpunit>
