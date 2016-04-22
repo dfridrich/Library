@@ -502,7 +502,7 @@ class Lib
         $pretitle = $first_name = $last_name = $posttitle = '';
 
         foreach ($names as $name) {
-            if ((substr($name, -1) == '.' || $name == 'et') && empty($first_name)) {
+            if ((mb_substr($name, -1) == '.' || $name == 'et') && empty($first_name)) {
                 $pretitle .= $name.' ';
                 continue;
             }
@@ -510,7 +510,7 @@ class Lib
                 $first_name = $name;
                 continue;
             }
-            if (substr($name, -1) == '.' && !empty($last_name)) {
+            if (mb_substr($name, -1) == '.' && !empty($last_name)) {
                 $posttitle .= $name.' ';
                 continue;
             }
@@ -522,8 +522,8 @@ class Lib
 
         return [
             trim($pretitle),
-            ucwords(trim(strtolower($first_name))),
-            ucwords(trim(strtolower($last_name))),
+            ucwords(trim(mb_strtolower($first_name))),
+            ucwords(trim(mb_strtolower($last_name))),
             trim($posttitle),
         ];
     }
