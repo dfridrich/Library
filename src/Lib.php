@@ -1116,7 +1116,7 @@ class Lib
      *
      * @return int|string
      */
-    public function dateQuarter(\DateTime $date, $withYear = true, $withQ = true)
+    public static function dateQuarter(\DateTime $date, $withYear = true, $withQ = true)
     {
         $n = $date->format('n');
         if ($n < 4) {
