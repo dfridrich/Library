@@ -1109,4 +1109,35 @@ class Lib
 
         return (int)$ic[7] === $c;
     }
+    
+    /**
+     * @param \DateTime $date
+     * @param bool      $withYear
+     *
+     * @return int|string
+     */
+    public function dateQuarter(\DateTime $date, $withYear = true, $withQ = true)
+    {
+        $n = $date->format('n');
+        if ($n < 4) {
+            $q = 1;
+        } elseif ($n > 3 && $n < 7) {
+            $q = 2;
+        } elseif ($n > 6 && $n < 10) {
+            $q = 3;
+        } elseif ($n > 9) {
+            $q = 4;
+        }
+
+        if ($withQ) {
+            $q .= 'Q';
+        }
+
+        if (!$withYear) {
+            return $q;
+        }
+
+        return $q.'/'.$date->format('Y');
+    }
+    
 }
