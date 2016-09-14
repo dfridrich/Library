@@ -261,8 +261,8 @@ class Lib
     public static function getBoolLabel($bool)
     {
         return $bool
-            ? '<span class="label label-green">Ano</span>'
-            : '<span class="label label-red">Ne</span>';
+            ? '<span class="label label-green label-success">Ano</span>'
+            : '<span class="label label-red label-danger">Ne</span>';
     }
 
     /**
