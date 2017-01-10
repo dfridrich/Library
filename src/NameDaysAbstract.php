@@ -43,10 +43,13 @@ abstract class NameDaysAbstract
     {
         $matches = [];
         for ($i = 1; $i <= 12; $i++) {
-            foreach (static::$data[$i] as $day => $value) {
-                $check = mb_stripos($value, $name);
-                if (false !== $check) {
-                    $matches[] = [$i, $day, $value, levenshtein($name, $value)];
+            foreach (static::$data[$i] as $day => $values) {
+                $values = explode(", ", $values);
+                foreach ($values as $value) {
+                    $check = mb_stripos($value, $name);
+                    if (false !== $check) {
+                        $matches[] = [$i, $day, $value, levenshtein($name, $value)];
+                    }
                 }
             }
         }
