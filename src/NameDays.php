@@ -12,7 +12,7 @@ class NameDays extends NameDaysAbstract
     /**
      * @var array
      */
-    protected static $data = [
+    public static $data = [
         1 => [
             1 => '!Nový rok',
             'Karina',

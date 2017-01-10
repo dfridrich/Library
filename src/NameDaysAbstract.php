@@ -12,7 +12,7 @@ abstract class NameDaysAbstract
     /**
      * @var array
      */
-    private static $data = [];
+    public static $data = [];
 
     /**
      * @param \DateTime $date
