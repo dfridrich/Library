@@ -522,8 +522,8 @@ class Lib
 
         return [
             trim($pretitle),
-            ucwords(trim(mb_strtolower($first_name))),
-            ucwords(trim(mb_strtolower($last_name))),
+            mb_convert_case(trim(mb_strtolower($first_name)), MB_CASE_TITLE, 'UTF-8'),
+            mb_convert_case(trim(mb_strtolower($last_name)), MB_CASE_TITLE, 'UTF-8'),
             trim($posttitle),
         ];
     }
