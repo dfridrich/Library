@@ -35,4 +35,5 @@ return PhpCsFixer\Config::create()
         'strict_param' => true,
     ])
     ->setFinder($finder)
+    ->setUsingCache(false)
 ;
