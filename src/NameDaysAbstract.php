@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr;
 
 /**
- * Class NameDays
- * @package Defr
+ * Class NameDays.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 abstract class NameDaysAbstract
@@ -25,10 +34,10 @@ abstract class NameDaysAbstract
             $date = new \DateTime();
         }
         $name = static::$data[$date->format('n')][$date->format('j')];
-        if ($name[0] != '!') {
+        if ('!' !== $name[0]) {
             $return = $name;
         } else {
-            $return = substr($name, 1);
+            $return = mb_substr($name, 1);
         }
 
         return $return;
@@ -42,9 +51,9 @@ abstract class NameDaysAbstract
     public static function getNameDate($name)
     {
         $matches = [];
-        for ($i = 1; $i <= 12; $i++) {
+        for ($i = 1; $i <= 12; ++$i) {
             foreach (static::$data[$i] as $day => $values) {
-                $values = explode(", ", $values);
+                $values = explode(', ', $values);
                 foreach ($values as $value) {
                     $check = mb_stripos($value, $name);
                     if (false !== $check) {
@@ -61,12 +70,12 @@ abstract class NameDaysAbstract
             }
         );
 
-        if (count($matches) == 0) {
+        if (0 === count($matches)) {
             return null;
         }
 
         $date = new \DateTime();
-        $date->setDate(date("Y"), $matches[0][0], $matches[0][1]);
+        $date->setDate(date('Y'), $matches[0][0], $matches[0][1]);
 
         return $date;
     }

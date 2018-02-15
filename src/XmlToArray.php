@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr;
 
 /**
@@ -42,9 +51,9 @@ class XmlToArray
     /**
      * @param $input_xml
      *
-     * @return mixed
-     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public static function &createArray($input_xml)
     {
@@ -55,7 +64,7 @@ class XmlToArray
                 throw new \Exception('[XML2Array] Error parsing the XML string.');
             }
         } else {
-            if (get_class($input_xml) != 'DOMDocument') {
+            if ('DOMDocument' !== get_class($input_xml)) {
                 throw new \Exception('[XML2Array] The input XML object should be of type: DOMDocument.');
             }
             $xml = self::$xml = $input_xml;
@@ -74,7 +83,7 @@ class XmlToArray
      */
     private static function &convert($node)
     {
-        $output = array();
+        $output = [];
 
         switch ($node->nodeType) {
             case XML_CDATA_SECTION_NODE:
@@ -97,12 +106,12 @@ class XmlToArray
 
                         // assume more nodes of same kind are coming
                         if (!isset($output[$t])) {
-                            $output[$t] = array();
+                            $output[$t] = [];
                         }
                         $output[$t][] = $v;
                     } else {
                         //check if it is not an empty text node
-                        if ($v !== '') {
+                        if ('' !== $v) {
                             $output = $v;
                         }
                     }
@@ -111,7 +120,7 @@ class XmlToArray
                 if (is_array($output)) {
                     // if only one node of its kind, assign it directly instead if array($value);
                     foreach ($output as $t => $v) {
-                        if (is_array($v) && count($v) == 1) {
+                        if (is_array($v) && 1 === count($v)) {
                             $output[$t] = $v[0];
                         }
                     }
@@ -123,13 +132,13 @@ class XmlToArray
 
                 // loop through the attributes and collect them
                 if ($node->attributes->length) {
-                    $a = array();
+                    $a = [];
                     foreach ($node->attributes as $attrName => $attrNode) {
                         $a[$attrName] = (string) $attrNode->value;
                     }
                     // if its an leaf node, store the value in @value instead of directly storing it.
                     if (!is_array($output)) {
-                        $output = array('@value' => $output);
+                        $output = ['@value' => $output];
                     }
                     $output['@attributes'] = $a;
                 }

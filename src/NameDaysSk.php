@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr;
 
 /**
- * Class NameDaysSk
- * @package Defr
+ * Class NameDaysSk.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class NameDaysSk extends NameDaysAbstract
@@ -13,7 +22,7 @@ class NameDaysSk extends NameDaysAbstract
      * @var array
      */
     public static $data = [
-        1  => [
+        1 => [
             1 => 'Nový rok',
             'Alexandra',
             'Daniela',
@@ -46,9 +55,8 @@ class NameDaysSk extends NameDaysAbstract
             'Ema',
             'Emil',
         ],
-        2  => [
-            1 =>
-                'Tatiana',
+        2 => [
+            1 => 'Tatiana',
             'Erik',
             'Blažej',
             'Veronika',
@@ -78,9 +86,8 @@ class NameDaysSk extends NameDaysAbstract
             'Zlatica',
             'Radomír',
         ],
-        3  => [
-            1 =>
-                'Albín',
+        3 => [
+            1 => 'Albín',
             'Anežka',
             'Bohumil',
             'Kazimír',
@@ -112,9 +119,8 @@ class NameDaysSk extends NameDaysAbstract
             'Vieroslava',
             'Benjamín',
         ],
-        4  => [
-            1 =>
-                'Hugo',
+        4 => [
+            1 => 'Hugo',
             'Zita',
             'Richard',
             'Izidor',
@@ -145,9 +151,8 @@ class NameDaysSk extends NameDaysAbstract
             'Lea',
             'Anastázia',
         ],
-        5  => [
-            1 =>
-                'Sviatok práce',
+        5 => [
+            1 => 'Sviatok práce',
             'Žigmund',
             'Galina',
             'Florián',
@@ -179,9 +184,8 @@ class NameDaysSk extends NameDaysAbstract
             'Ferdinand',
             'Petronela',
         ],
-        6  => [
-            1 =>
-                'Žaneta',
+        6 => [
+            1 => 'Žaneta',
             'Xénia',
             'Karolína',
             'Lenka',
@@ -212,9 +216,8 @@ class NameDaysSk extends NameDaysAbstract
             'Peter',
             'Melánia',
         ],
-        7  => [
-            1 =>
-                'Diana',
+        7 => [
+            1 => 'Diana',
             'Berta',
             'Miloslav',
             'Prokop',
@@ -246,9 +249,8 @@ class NameDaysSk extends NameDaysAbstract
             'Libuša',
             'Ignác',
         ],
-        8  => [
-            1 =>
-                'Božidara',
+        8 => [
+            1 => 'Božidara',
             'Gustáv',
             'Jerguš',
             'Dominik',
@@ -280,9 +282,8 @@ class NameDaysSk extends NameDaysAbstract
             'Ružena',
             'Nora',
         ],
-        9  => [
-            1 =>
-                'Drahoslava',
+        9 => [
+            1 => 'Drahoslava',
             'Linda',
             'Belo',
             'Rozália',
@@ -314,8 +315,7 @@ class NameDaysSk extends NameDaysAbstract
             'Jarolím',
         ],
         10 => [
-            1 =>
-                'Arnold',
+            1 => 'Arnold',
             'Levoslav',
             'Stela',
             'František',
@@ -348,8 +348,7 @@ class NameDaysSk extends NameDaysAbstract
             'Aurélia',
         ],
         11 => [
-            1 =>
-                'Denis, Denisa',
+            1 => 'Denis, Denisa',
             'Pamiatka zosnulých',
             'Hubert',
             'Karol',
@@ -381,8 +380,7 @@ class NameDaysSk extends NameDaysAbstract
             'Ondrej',
         ],
         12 => [
-            1 =>
-                'Edmund',
+            1 => 'Edmund',
             'Bibiána',
             'Oldrich',
             'Barbora',
@@ -415,5 +413,4 @@ class NameDaysSk extends NameDaysAbstract
             'Silvester',
         ],
     ];
-
 }

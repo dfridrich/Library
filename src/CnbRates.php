@@ -1,13 +1,22 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr;
 
 use Defr\CnbRates\Rate;
 use Defr\CnbRates\Rates;
 
 /**
- * Class CnbRates
- * @package Defr
+ * Class CnbRates.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class CnbRates
@@ -24,7 +33,7 @@ class CnbRates
      */
     public function __construct($cacheDir = null)
     {
-        if ($cacheDir === null) {
+        if (null === $cacheDir) {
             $cacheDir = sys_get_temp_dir();
         }
         $this->cacheDir = $cacheDir.'/defr';
@@ -37,7 +46,7 @@ class CnbRates
      */
     public function getRates(\DateTime $date = null)
     {
-        if ($date === null) {
+        if (null === $date) {
             $date = new \DateTime();
         }
 

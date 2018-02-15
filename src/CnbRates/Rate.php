@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr\CnbRates;
 
 /**
- * Class Rate
- * @package Defr\CnbRates
+ * Class Rate.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Rate
@@ -62,7 +71,7 @@ class Rate
      */
     public function __toString()
     {
-        return strval($this->rate);
+        return (string) ($this->rate);
     }
 
     /**

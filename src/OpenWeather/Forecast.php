@@ -1,16 +1,25 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr\OpenWeather;
 
 /**
- * Class Forecast
- * @package Defr\OpenWeather
+ * Class Forecast.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Forecast
 {
-    const IMAGE_PNG = "png";
-    const IMAGE_JPG = "jpg";
+    const IMAGE_PNG = 'png';
+    const IMAGE_JPG = 'jpg';
 
     private $sunset;
     private $sunrise;
@@ -168,21 +177,23 @@ class Forecast
 
     /**
      * @param string $type
+     *
      * @return string
      */
     public function getImage($type = self::IMAGE_JPG)
     {
-        return $this->image . '.' . $type;
+        return $this->image.'.'.$type;
     }
 
     /**
-     * @param string $type
+     * @param string     $type
      * @param bool|false $getHtmlTag
+     *
      * @return string
      */
     public function getImageBlob($type = self::IMAGE_JPG, $getHtmlTag = false)
     {
-        $location = sprintf(__DIR__ . "/../../assets/OpenWeather/%s/%s.%s", $type, $this->image, $type);
+        $location = sprintf(__DIR__.'/../../assets/OpenWeather/%s/%s.%s', $type, $this->image, $type);
         $blob = sprintf('data:image/%s;base64,%s',
             $type,
             base64_encode(file_get_contents($location))
@@ -195,13 +206,14 @@ class Forecast
                 $this->description,
                 $this->description
             );
-        } else {
-            return $blob;
         }
+
+        return $blob;
     }
 
     /**
      * @param string $type
+     *
      * @return string
      */
     public function getImageHtmlTag($type = self::IMAGE_JPG)

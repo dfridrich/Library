@@ -1,6 +1,15 @@
 <?php
 
-require "../vendor/autoload.php";
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
+require '../vendor/autoload.php';
 
 use Defr\NameDays;
 

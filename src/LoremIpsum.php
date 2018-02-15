@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr;
 
 /**
@@ -42,14 +51,16 @@ class LoremIpsum
     /**
      * @var array
      */
-    private $words, $wordsPerParagraph, $wordsPerSentence;
+    private $words;
+    private $wordsPerParagraph;
+    private $wordsPerSentence;
 
     /**
      * @return LoremIpsum|null
      */
     public static function getInstance()
     {
-        if (self::$_instance === null) {
+        if (null === self::$_instance) {
             self::$_instance = new self();
         }
 
@@ -63,7 +74,7 @@ class LoremIpsum
     {
         $this->wordsPerParagraph = $wordsPer;
         $this->wordsPerSentence = 24.460;
-        $this->words = array(
+        $this->words = [
             'lorem',
             'ipsum',
             'dolor',
@@ -242,7 +253,7 @@ class LoremIpsum
             'tempor',
             'risus',
             'cras',
-        );
+        ];
     }
 
     /**
@@ -274,7 +285,7 @@ class LoremIpsum
      */
     public function getContent($count, $format = 'html', $loremipsum = true)
     {
-        $format = strtolower($format);
+        $format = mb_strtolower($format);
 
         if ($count <= 0) {
             return '';
@@ -309,7 +320,7 @@ class LoremIpsum
             $word = $this->words[$index];
             //echo $index . '=>' . $word . '<br />';
 
-            if ($i > 0 && $arr[$i - 1] == $word) {
+            if ($i > 0 && $arr[$i - 1] === $word) {
                 --$i;
             } else {
                 $arr[$i] = $word;
@@ -326,13 +337,13 @@ class LoremIpsum
      */
     private function getPlain($count, $loremipsum, $returnStr = true)
     {
-        $words = array();
+        $words = [];
         $this->getWords($words, $count, $loremipsum);
         //print_r($words);
 
         $delta = $count;
         $curr = 0;
-        $sentences = array();
+        $sentences = [];
         while ($delta > 0) {
             $senSize = $this->gaussianSentence();
             //echo $curr . '<br />';
@@ -342,7 +353,7 @@ class LoremIpsum
 
             $delta -= $senSize;
 
-            $sentence = array();
+            $sentence = [];
             for ($i = $curr; $i < ($curr + $senSize); ++$i) {
                 $sentence[] = $words[$i];
             }
@@ -361,9 +372,9 @@ class LoremIpsum
             }
 
             return $output;
-        } else {
-            return $sentences;
         }
+
+        return $sentences;
     }
 
     /**
@@ -377,7 +388,7 @@ class LoremIpsum
         $sentences = $this->getPlain($count, $loremipsum, false);
         $paragraphs = $this->getParagraphArr($sentences);
 
-        $paragraphStr = array();
+        $paragraphStr = [];
         foreach ($paragraphs as $p) {
             $paragraphStr[] = $this->paragraphToString($p);
         }
@@ -398,19 +409,19 @@ class LoremIpsum
         $sentenceAvg = $this->wordsPerSentence;
         $total = count($sentences);
 
-        $paragraphs = array();
+        $paragraphs = [];
 //        $pCount = 0;
         $currCount = 0;
-        $curr = array();
+        $curr = [];
 
         for ($i = 0; $i < $total; ++$i) {
             $s = $sentences[$i];
             $currCount += count($s);
             $curr[] = $s;
-            if ($currCount >= ($wordsPer - round($sentenceAvg / 2.00)) || $i == $total - 1) {
+            if ($currCount >= ($wordsPer - round($sentenceAvg / 2.00)) || $i === $total - 1) {
                 $currCount = 0;
                 $paragraphs[] = $curr;
-                $curr = array();
+                $curr = [];
                 //print_r($paragraphs);
             }
             //print_r($paragraphs);
@@ -431,7 +442,7 @@ class LoremIpsum
         $paragraphs = $this->getParagraphArr($sentences);
         //print_r($paragraphs);
 
-        $paragraphStr = array();
+        $paragraphStr = [];
         foreach ($paragraphs as $p) {
             $paragraphStr[] = "<p>\n".$this->paragraphToString($p, true).'</p>';
         }
@@ -472,8 +483,8 @@ class LoremIpsum
         $sentences = preg_split('/([.?!]+)/', $string, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
         $new_string = '';
         foreach ($sentences as $key => $sentence) {
-            $new_string .= ($key & 1) == 0 ?
-                ucfirst(strtolower(trim($sentence))) :
+            $new_string .= 0 === ($key & 1) ?
+                ucfirst(mb_strtolower(trim($sentence))) :
                 $sentence.' ';
         }
 
@@ -482,7 +493,9 @@ class LoremIpsum
 
     /**
      * Inserts commas and periods in the given word array.
+     *
      * @param $sentence
+     *
      * @return mixed|null
      */
     private function punctuate(&$sentence)
@@ -554,7 +567,7 @@ class LoremIpsum
         $y = $this->random_0_1();
 
         // two independent variables with normal distribution N(0,1)
-        $u = sqrt(-2 * log($x)) * cos(2 * pi() * $y);
+        $u = sqrt(-2 * log($x)) * cos(2 * M_PI * $y);
 //        $v = sqrt(-2 * log($x)) * sin(2 * pi() * $y);
 
         // i will return only one, couse only one needed

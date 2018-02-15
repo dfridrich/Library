@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr;
 
 /**
- * Class CsvImporter
- * @package Defr
+ * Class CsvImporter.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class CsvImporter
@@ -54,7 +63,7 @@ class CsvImporter
     {
         //if $max_lines is set to 0, then get all the data
 
-        $data = array();
+        $data = [];
 
         if ($max_lines > 0) {
             $line_count = 0;
@@ -62,7 +71,7 @@ class CsvImporter
             $line_count = -1;
         } // so loop limit is ignored
 
-        while ($line_count < $max_lines && ($row = fgetcsv($this->fp, $this->length, $this->delimiter)) !== false) {
+        while ($line_count < $max_lines && false !== ($row = fgetcsv($this->fp, $this->length, $this->delimiter))) {
             if ($this->parse_header) {
                 $row_new = null;
                 foreach ($this->header as $i => $heading_i) {
@@ -78,10 +87,10 @@ class CsvImporter
             }
         }
 
-        if ($max_lines == 1 && isset($data[0])) {
+        if (1 === $max_lines && isset($data[0])) {
             return $data[0];
-        } else {
-            return $data;
         }
+
+        return $data;
     }
 }

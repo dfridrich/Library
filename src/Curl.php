@@ -1,11 +1,21 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr;
 
 /**
- * Class Curl
- * @package Defr
+ * Class Curl.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
  * @see https://github.com/php-curl-class/php-curl-class
  */
 class Curl
@@ -62,8 +72,10 @@ class Curl
     /**
      * @param $url_mixed
      * @param array $data
-     * @return int|mixed|null
+     *
      * @throws \ErrorException
+     *
+     * @return int|mixed|null
      */
     public function get($url_mixed, $data = [])
     {
@@ -82,7 +94,7 @@ class Curl
                 $this->curls[] = $curl;
 
                 $curlm_error_code = curl_multi_add_handle($curl_multi, $curl->curl);
-                if (!($curlm_error_code === CURLM_OK)) {
+                if (!(CURLM_OK === $curlm_error_code)) {
                     throw new \ErrorException(
                         'cURL multi add handle error: '.
                         curl_multi_strerror($curlm_error_code)
@@ -98,7 +110,7 @@ class Curl
 
             do {
                 $status = curl_multi_exec($curl_multi, $active);
-            } while ($status === CURLM_CALL_MULTI_PERFORM || $active);
+            } while (CURLM_CALL_MULTI_PERFORM === $status || $active);
 
             foreach ($this->curls as $ch) {
                 $this->exec($ch);
@@ -116,6 +128,7 @@ class Curl
     /**
      * @param $url
      * @param array $data
+     *
      * @return int|mixed
      */
     public function post($url, $data = [])
@@ -130,6 +143,7 @@ class Curl
     /**
      * @param $url
      * @param array $data
+     *
      * @return int|mixed
      */
     public function put($url, $data = [])
@@ -144,6 +158,7 @@ class Curl
     /**
      * @param $url
      * @param array $data
+     *
      * @return int|mixed
      */
     public function patch($url, $data = [])
@@ -158,6 +173,7 @@ class Curl
     /**
      * @param $url
      * @param array $data
+     *
      * @return int|mixed
      */
     public function delete($url, $data = [])
@@ -218,11 +234,12 @@ class Curl
      * @param $option
      * @param $value
      * @param null $_ch
+     *
      * @return bool
      */
     public function setOpt($option, $value, $_ch = null)
     {
-        $ch = is_null($_ch) ? $this->curl : $_ch;
+        $ch = null === $_ch ? $this->curl : $_ch;
         $this->_options[$option] = $value;
 
         return curl_setopt($ch, $option, $value);
@@ -282,6 +299,7 @@ class Curl
     /**
      * @param $url
      * @param array $data
+     *
      * @return string
      */
     private function _buildURL($url, $data = [])
@@ -291,6 +309,7 @@ class Curl
 
     /**
      * @param $data
+     *
      * @return array|string
      */
     private function _postfields($data)
@@ -315,11 +334,12 @@ class Curl
 
     /**
      * @param null $_ch
+     *
      * @return int|mixed
      */
     protected function exec($_ch = null)
     {
-        $ch = is_null($_ch) ? $this : $_ch;
+        $ch = null === $_ch ? $this : $_ch;
 
         if ($ch->_multi_child) {
             $ch->response = curl_multi_getcontent($ch->curl);
@@ -329,9 +349,9 @@ class Curl
 
         $ch->curl_error_code = curl_errno($ch->curl);
         $ch->curl_error_message = curl_error($ch->curl);
-        $ch->curl_error = !($ch->curl_error_code === 0);
+        $ch->curl_error = !(0 === $ch->curl_error_code);
         $ch->http_status_code = curl_getinfo($ch->curl, CURLINFO_HTTP_CODE);
-        $ch->http_error = in_array(floor($ch->http_status_code / 100), [4, 5]);
+        $ch->http_error = in_array(floor($ch->http_status_code / 100), [4, 5], true);
         $ch->error = $ch->curl_error || $ch->http_error;
         $ch->error_code = $ch->error ? ($ch->curl_error ? $ch->curl_error_code : $ch->http_status_code) : 0;
 
@@ -342,9 +362,9 @@ class Curl
             PREG_SPLIT_NO_EMPTY
         );
         $ch->response_headers = '';
-        if (!(strpos($ch->response, "\r\n\r\n") === false)) {
+        if (!(false === mb_strpos($ch->response, "\r\n\r\n"))) {
             list($response_header, $ch->response) = explode("\r\n\r\n", $ch->response, 2);
-            if ($response_header === 'HTTP/1.1 100 Continue') {
+            if ('HTTP/1.1 100 Continue' === $response_header) {
                 list($response_header, $ch->response) = explode("\r\n\r\n", $ch->response, 2);
             }
             $ch->response_headers = preg_split('/\r\n/', $response_header, null, PREG_SPLIT_NO_EMPTY);
@@ -383,15 +403,17 @@ class Curl
 
     /**
      * @param $array
+     *
      * @return bool
      */
     protected function is_array_assoc($array)
     {
-        return (bool)count(array_filter(array_keys($array), 'is_string'));
+        return (bool) count(array_filter(array_keys($array), 'is_string'));
     }
 
     /**
      * @param $array
+     *
      * @return bool
      */
     protected function is_array_multidim($array)
@@ -406,6 +428,7 @@ class Curl
     /**
      * @param $data
      * @param null $key
+     *
      * @return string
      */
     protected function http_build_multi_query($data, $key = null)
@@ -421,10 +444,10 @@ class Curl
         foreach ($data as $k => $value) {
             if (is_string($value) || is_numeric($value)) {
                 $brackets = $is_array_assoc ? '['.$k.']' : '[]';
-                $query[] = urlencode(is_null($key) ? $k : $key.$brackets).'='.rawurlencode($value);
+                $query[] = urlencode(null === $key ? $k : $key.$brackets).'='.rawurlencode($value);
             } else {
                 if (is_array($value)) {
-                    $nested = is_null($key) ? $k : $key.'['.$k.']';
+                    $nested = null === $key ? $k : $key.'['.$k.']';
                     $query[] = $this->http_build_multi_query($value, $nested);
                 }
             }

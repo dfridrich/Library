@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr\CnbRates;
 
 /**
- * Class Rates
- * @package Defr\CnbRates
+ * Class Rates.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Rates implements \IteratorAggregate
@@ -32,18 +41,17 @@ class Rates implements \IteratorAggregate
     /**
      * @param $currency
      *
-     * @return Rate
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return Rate
      */
     public function getRate($currency = 'EUR')
     {
-        $currency = strtoupper($currency);
+        $currency = mb_strtoupper($currency);
         if (array_key_exists($currency, $this->rates)) {
             return $this->rates[$currency];
-        } else {
-            throw new \InvalidArgumentException('Kurz pro měnu '.$currency.' neexistuje.');
         }
+        throw new \InvalidArgumentException('Kurz pro měnu '.$currency.' neexistuje.');
     }
 
     /**

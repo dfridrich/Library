@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr;
 
 use Defr\OpenWeather\Forecast;
 
 /**
- * Class OpenWeather
- * @package Defr
+ * Class OpenWeather.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class OpenWeather
@@ -27,7 +36,7 @@ class OpenWeather
      */
     public function __construct($cacheDir = null, $apiKey = null)
     {
-        if ($cacheDir === null) {
+        if (null === $cacheDir) {
             $cacheDir = sys_get_temp_dir();
         }
         $this->cacheDir = $cacheDir.'/defr';
@@ -35,7 +44,7 @@ class OpenWeather
     }
 
     /**
-     * @param null $city
+     * @param null   $city
      * @param string $lang
      * @param string $units
      *
@@ -43,7 +52,7 @@ class OpenWeather
      */
     public function getForecast($city = null, $lang = 'cz', $units = self::UNITS_METRIC)
     {
-        $city = $city == null ? self::DEFAULT_CITY : $city;
+        $city = null === $city ? self::DEFAULT_CITY : $city;
         $cachedFileName = md5(date('YmdH').$city.$lang.$units).'.json';
 
         if (!is_dir($this->cacheDir)) {
@@ -64,8 +73,8 @@ class OpenWeather
             (new \DateTime())->setTimestamp($json->sys->sunset),
             (new \DateTime())->setTimestamp($json->sys->sunrise),
             $json->name,
-            $json->weather{0}->description,
-            $this->getFontAwesomeIcons()[strtolower($json->weather{0}->main)],
+            $json->weather[0]->description,
+            $this->getFontAwesomeIcons()[mb_strtolower($json->weather[0]->main)],
             $json->main->temp,
             $json->main->pressure,
             $json->main->humidity,
@@ -73,7 +82,7 @@ class OpenWeather
             $json->main->temp_max,
             isset($json->wind->speed) ? $json->wind->speed : null,
             isset($json->wind->deg) ? $json->wind->deg : null,
-            $this->getWeatherImages()[strtolower($json->weather{0}->main)]
+            $this->getWeatherImages()[mb_strtolower($json->weather[0]->main)]
         );
 
         return $forecast;
@@ -85,12 +94,12 @@ class OpenWeather
     private function getFontAwesomeIcons()
     {
         return [
-            'clear'        => 'fa fa-sun-o',
-            'clouds'       => 'fa fa-cloud',
-            'mist'         => 'fa fa-cloud',
-            'rain'         => 'fa fa-tint',
-            'snow'         => 'fa fa-empire',
-            'storm'        => 'fa fa-flash',
+            'clear' => 'fa fa-sun-o',
+            'clouds' => 'fa fa-cloud',
+            'mist' => 'fa fa-cloud',
+            'rain' => 'fa fa-tint',
+            'snow' => 'fa fa-empire',
+            'storm' => 'fa fa-flash',
             'thunderstorm' => 'fa fa-flash',
         ];
     }
@@ -101,12 +110,12 @@ class OpenWeather
     private function getWeatherImages()
     {
         return [
-            'clear'        => 'clear',
-            'clouds'       => 'clouds',
-            'mist'         => 'mist',
-            'rain'         => 'rain',
-            'snow'         => 'snow',
-            'storm'        => 'storm',
+            'clear' => 'clear',
+            'clouds' => 'clouds',
+            'mist' => 'mist',
+            'rain' => 'rain',
+            'snow' => 'snow',
+            'storm' => 'storm',
             'thunderstorm' => 'thunderstorm',
         ];
     }

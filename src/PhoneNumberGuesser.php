@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr;
 
 /**
- * Class PhoneNumberGuesser
- * @package Defr
+ * Class PhoneNumberGuesser.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class PhoneNumberGuesser
@@ -35,26 +44,26 @@ class PhoneNumberGuesser
         $number = self::reformatPhone($number);
 
         // Cisla s tuzemskou predvolbou
-        if (substr($number, 0, strlen(self::DOMESTIC_PREFIX)) == self::DOMESTIC_PREFIX) {
+        if (self::DOMESTIC_PREFIX === mb_substr($number, 0, mb_strlen(self::DOMESTIC_PREFIX))) {
             return self::handleDomestic($number);
         }
 
         // Cisla odpovidajici tuzemske delce
-        if (strlen($number) == self::DOMESTIC_LENGTH) {
+        if (self::DOMESTIC_LENGTH === mb_strlen($number)) {
             return self::handleDomestic($number);
         }
 
         // Cisla s predvolbou
-        if (in_array(substr($number, 0, 1), explode(',', self::SPECIAL_PREFIX))) {
+        if (in_array(mb_substr($number, 0, 1), explode(',', self::SPECIAL_PREFIX), true)) {
             return self::handleSpecial($number);
         }
 
         // Mezinarodni
-        if (substr($number, 0, strlen(self::INTERNATIONAL_PREFIX)) == self::INTERNATIONAL_PREFIX) {
+        if (self::INTERNATIONAL_PREFIX === mb_substr($number, 0, mb_strlen(self::INTERNATIONAL_PREFIX))) {
             return self::TYPE_INTERNATIONAL;
         }
 
-        // Pokud se nic nechytlo        
+        // Pokud se nic nechytlo
         return self::handleOther($number);
     }
 
@@ -68,7 +77,7 @@ class PhoneNumberGuesser
         // Odstranime znak + a pracujeme jen s cislem (pokud se nejedna o specialni cislo)
         $number = str_replace('+', '00', $number);
         // Odstranime mezery
-        $number = str_replace(array(' ', '-'), '', $number);
+        $number = str_replace([' ', '-'], '', $number);
 
         return $number;
     }

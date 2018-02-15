@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of Library package.
+ *
+ * (c) Dennis Fridrich <fridrich.dennis@gmail.com>
+ *
+ * For the full copyright and license information,
+ * please view the contract or license.
+ */
+
 namespace Defr;
 
 use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
 
 /**
- * Class Lib
- * @package Defr
+ * Class Lib.
+ *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
  */
 class Lib
@@ -32,7 +41,7 @@ class Lib
      */
     public static function getInstance()
     {
-        if (static::$_instance === null) {
+        if (null === static::$_instance) {
             static::$_instance = new self();
         }
 
@@ -46,11 +55,11 @@ class Lib
      */
     public static function getIp()
     {
-        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) && $_SERVER["HTTP_X_FORWARDED_FOR"] != "") {
-            return $_SERVER["HTTP_X_FORWARDED_FOR"];
-        } else {
-            return @$_SERVER["REMOTE_ADDR"];
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && '' !== $_SERVER['HTTP_X_FORWARDED_FOR']) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
+
+        return @$_SERVER['REMOTE_ADDR'];
     }
 
     /**
@@ -65,6 +74,7 @@ class Lib
 
     /**
      * @param bool $string
+     *
      * @return array|null|string
      */
     public static function getBrowser($string = true)
@@ -117,10 +127,10 @@ class Lib
 
             // see how many we have
             $i = count($matches['browser']);
-            if ($i != 1) {
+            if (1 !== $i) {
                 //we will have two since we are not using 'other' argument yet
                 //see if version is before or after the name
-                if (strripos($u_agent, 'Version') < strripos($u_agent, $ub)) {
+                if (mb_strripos($u_agent, 'Version') < mb_strripos($u_agent, $ub)) {
                     $version = @$matches['version'][0];
                 } else {
                     $version = @$matches['version'][1];
@@ -130,38 +140,37 @@ class Lib
             }
 
             // check if we have a number
-            if ($version == null || $version == '') {
+            if (null === $version || '' === $version) {
                 $version = '?';
             }
 
             if ($string) {
                 return $bname.' '.$version.' ('.ucfirst($platform).')';
-            } else {
-                return [
+            }
+
+            return [
                     'userAgent' => $u_agent,
-                    'name'      => $bname,
-                    'version'   => $version,
-                    'platform'  => $platform,
-                    'pattern'   => $pattern,
+                    'name' => $bname,
+                    'version' => $version,
+                    'platform' => $platform,
+                    'pattern' => $pattern,
                 ];
-            }
-        } else {
-            if ($string) {
-                return null;
-            } else {
-                return [
-                    'userAgent' => null,
-                    'name'      => null,
-                    'version'   => null,
-                    'platform'  => null,
-                    'pattern'   => null,
-                ];
-            }
         }
+        if ($string) {
+            return null;
+        }
+
+        return [
+                    'userAgent' => null,
+                    'name' => null,
+                    'version' => null,
+                    'platform' => null,
+                    'pattern' => null,
+                ];
     }
 
     /**
-     * @param int $length
+     * @param int  $length
      * @param bool $safeChars
      *
      * @return string
@@ -186,7 +195,7 @@ class Lib
     }
 
     /**
-     * @param int $lenght
+     * @param int  $lenght
      * @param bool $safeChars
      *
      * @return string
@@ -198,8 +207,8 @@ class Lib
 
     /**
      * @param $string
-     * @param int $length
-     * @param int $start
+     * @param int  $length
+     * @param int  $start
      * @param bool $ellipsis
      *
      * @return string
@@ -207,12 +216,11 @@ class Lib
     public static function substring($string, $length = 50, $start = 0, $ellipsis = true)
     {
         $newString = trim(mb_substr($string, $start, $length, 'UTF-8'));
-        if (strlen($newString) < strlen($string) && $ellipsis) {
+        if (mb_strlen($newString) < mb_strlen($string) && $ellipsis) {
             return $newString.'...';
         } //&hellip;
-        else {
-            return $newString;
-        }
+
+        return $newString;
     }
 
     /**
@@ -227,7 +235,7 @@ class Lib
         // TODO opravit
         $url = parse_url($link, PHP_URL_PATH);
         if (!isset($url[$param])) {
-            if (strpos($link, '?')) {
+            if (mb_strpos($link, '?')) {
                 $link .= '&'.$param.'='.$value;
             } else {
                 $link .= '?'.$param.'='.$value;
@@ -286,7 +294,7 @@ class Lib
         }
 
         // lowercase
-        $text = strtolower($text);
+        $text = mb_strtolower($text);
 
         // remove unwanted characters
         $text = preg_replace('#[^-\w]+#', '', $text);
@@ -472,19 +480,19 @@ class Lib
      * 0-9, a-z, A-Z, -
      *
      * @param string $string
-     * @param bool $capitalize
+     * @param bool   $capitalize
      *
      * @return string
      */
     public static function idize($string, $capitalize = false)
     {
-        $string = strtolower(static::stripDiacritics($string));
+        $string = mb_strtolower(static::stripDiacritics($string));
 
         $string = preg_replace('/[^0-9a-zA-Z-]/i', '-', $string);
         $string = preg_replace('/(-+)/i', '-', $string);
         $string = trim($string, '-');
 
-        return $capitalize ? strtoupper($string) : $string;
+        return $capitalize ? mb_strtoupper($string) : $string;
     }
 
     /**
@@ -502,7 +510,7 @@ class Lib
         $pretitle = $first_name = $last_name = $posttitle = '';
 
         foreach ($names as $name) {
-            if ((mb_substr($name, -1) == '.' || $name == 'et') && empty($first_name)) {
+            if (('.' === mb_substr($name, -1) || 'et' === $name) && empty($first_name)) {
                 $pretitle .= $name.' ';
                 continue;
             }
@@ -510,7 +518,7 @@ class Lib
                 $first_name = $name;
                 continue;
             }
-            if (mb_substr($name, -1) == '.' && !empty($last_name)) {
+            if ('.' === mb_substr($name, -1) && !empty($last_name)) {
                 $posttitle .= $name.' ';
                 continue;
             }
@@ -539,7 +547,7 @@ class Lib
     {
         $name = static::parseName($name);
 
-        return substr($name[1], 0, 1).'. '.$name[2];
+        return mb_substr($name[1], 0, 1).'. '.$name[2];
     }
 
     /**
@@ -554,9 +562,9 @@ class Lib
         $a = fopen($filename, 'r');
         $string = fread($a, 20);
         fclose($a);
-        $data = bin2hex(substr($string, 14, 4));
-        $x = substr($data, 0, 4);
-        $y = substr($data, 0, 4);
+        $data = bin2hex(mb_substr($string, 14, 4));
+        $x = mb_substr($data, 0, 4);
+        $y = mb_substr($data, 0, 4);
 
         return [hexdec($x), hexdec($y)];
     }
@@ -576,10 +584,10 @@ class Lib
         $data['dpi_y'] = $dpi[1];
 
         // Sometimes it returns 10752, which is (WHY?!) 72 dpi
-        if ($data['dpi_x'] == 10752) {
+        if (10752 === $data['dpi_x']) {
             $data['dpi_x'] = 72;
         }
-        if ($data['dpi_y'] == 10752) {
+        if (10752 === $data['dpi_y']) {
             $data['dpi_y'] = 72;
         }
 
@@ -588,10 +596,10 @@ class Lib
         $data['image_h'] = $info[1];
         $data['bits'] = $info['bits'];
         $data['channels'] = '';
-        if ($info['channels'] == 3) {
+        if (3 === $info['channels']) {
             $data['channels'] = 'RGB';
         }
-        if ($info['channels'] == 4) {
+        if (4 === $info['channels']) {
             $data['channels'] = 'CMYK';
         }
 
@@ -606,13 +614,13 @@ class Lib
      */
     public static function humanFileSize($size, $unit = 'MB')
     {
-        if ((!$unit && $size >= 1 << 30) || $unit == 'GB') {
+        if ((!$unit && $size >= 1 << 30) || 'GB' === $unit) {
             return number_format($size / (1 << 30), 2).' GB';
         }
-        if ((!$unit && $size >= 1 << 20) || $unit == 'MB') {
+        if ((!$unit && $size >= 1 << 20) || 'MB' === $unit) {
             return number_format($size / (1 << 20), 2).' MB';
         }
-        if ((!$unit && $size >= 1 << 10) || $unit == 'KB') {
+        if ((!$unit && $size >= 1 << 10) || 'KB' === $unit) {
             return number_format($size / (1 << 10), 2).' KB';
         }
 
@@ -628,7 +636,7 @@ class Lib
      */
     public static function countDpi($origDpi, $origW, $printW)
     {
-        if ($origDpi == 0 or $printW == 0 or $origW == 0) {
+        if (0 === $origDpi or 0 === $printW or 0 === $origW) {
             return 0;
         }
 
@@ -648,13 +656,13 @@ class Lib
 
         // do the math on each tuple
         // could use bitwise operates more efeceintly but just do strings for now.
-        $red1 = hexdec(substr($rgb1, 0, 2));
-        $green1 = hexdec(substr($rgb1, 2, 2));
-        $blue1 = hexdec(substr($rgb1, 4, 2));
+        $red1 = hexdec(mb_substr($rgb1, 0, 2));
+        $green1 = hexdec(mb_substr($rgb1, 2, 2));
+        $blue1 = hexdec(mb_substr($rgb1, 4, 2));
 
-        $red2 = hexdec(substr($rgb2, 0, 2));
-        $green2 = hexdec(substr($rgb2, 2, 2));
-        $blue2 = hexdec(substr($rgb2, 4, 2));
+        $red2 = hexdec(mb_substr($rgb2, 0, 2));
+        $green2 = hexdec(mb_substr($rgb2, 2, 2));
+        $blue2 = hexdec(mb_substr($rgb2, 4, 2));
 
         //return abs($red1 - $red2) + abs($green1 - $green2) + abs($blue2 - $blue2) ;
         //die($red2 . ' ' .$red1);
@@ -697,11 +705,11 @@ class Lib
             if (is_numeric($word)) {
                 $out[] = $word;
             } else {
-                $len = strlen($word);
+                $len = mb_strlen($word);
                 if ($len >= 7) {
-                    $word = substr($word, 0, -3);
+                    $word = mb_substr($word, 0, -3);
                 } elseif ($len > 3) {
-                    $word = substr($word, 0, -1);
+                    $word = mb_substr($word, 0, -1);
                 }
                 $out[] = $word;
             }
@@ -727,7 +735,7 @@ class Lib
      */
     public static function roundPrice($price)
     {
-        return (float)number_format($price, 2, '.', '');
+        return (float) number_format($price, 2, '.', '');
     }
 
     /**
@@ -738,7 +746,7 @@ class Lib
      */
     public static function round($number, $decimals = 2)
     {
-        return (float)number_format($number, $decimals, '.', '');
+        return (float) number_format($number, $decimals, '.', '');
     }
 
     /**
@@ -819,13 +827,14 @@ class Lib
     /**
      * @param $count
      * @param $words
+     *
      * @return null|string
      */
     public static function declinationFromArray($count, $words)
     {
-        if ($count == 0 or $count >= 5) {
+        if (0 === $count or $count >= 5) {
             return $count.' '.$words[0];
-        } elseif ($count == 1) {
+        } elseif (1 === $count) {
             return $count.' '.$words[1];
         } elseif ($count >= 2 && $count <= 4) {
             return $count.' '.$words[2];
@@ -850,7 +859,7 @@ class Lib
      * @param $amount
      * @param $variableSymbol
      * @param string $message
-     * @param int $size
+     * @param int    $size
      *
      * @return string
      */
@@ -906,7 +915,7 @@ class Lib
      */
     public static function toggleBoolean($value)
     {
-        return (bool)$value ? false : true;
+        return (bool) $value ? false : true;
     }
 
     /**
@@ -936,12 +945,12 @@ class Lib
     {
         // Work out if hash given
         $hash = '';
-        if (stristr($hex, '#')) {
+        if (mb_stristr($hex, '#')) {
             $hex = str_replace('#', '', $hex);
             $hash = '#';
         }
         /// HEX TO RGB
-        $rgb = [hexdec(substr($hex, 0, 2)), hexdec(substr($hex, 2, 2)), hexdec(substr($hex, 4, 2))];
+        $rgb = [hexdec(mb_substr($hex, 0, 2)), hexdec(mb_substr($hex, 2, 2)), hexdec(mb_substr($hex, 4, 2))];
         //// CALCULATE
         for ($i = 0; $i < 3; ++$i) {
             // See if brighter or darker
@@ -964,7 +973,7 @@ class Lib
             // Convert the decimal digit to hex
             $hexDigit = dechex($rgb[$i]);
             // Add a leading zero if necessary
-            if (strlen($hexDigit) == 1) {
+            if (1 === mb_strlen($hexDigit)) {
                 $hexDigit = '0'.$hexDigit;
             }
             // Append to the hex string
@@ -981,7 +990,7 @@ class Lib
      */
     public static function toNumber($string)
     {
-        return floatval(str_replace(',', '.', str_replace('.', '', $string)));
+        return (float) (str_replace(',', '.', str_replace('.', '', $string)));
     }
 
     /**
@@ -991,7 +1000,7 @@ class Lib
      */
     public static function toInteger($string)
     {
-        return intval(preg_replace('/(?<=\d)\s+(?=\d)/', '', trim($string)));
+        return (int) (preg_replace('/(?<=\d)\s+(?=\d)/', '', trim($string)));
     }
 
     public static function dateToText(\DateTime $date)
@@ -1014,26 +1023,29 @@ class Lib
      */
     public static function greetUser()
     {
-        $time = date("H");
-        if ($time < "6") {
-            return "good_early_morning";
-        } elseif ($time < "9") {
-            return "good_morning";
-        } elseif ($time < "12") {
-            return "good_forenoon";
-        } elseif ($time == "12") {
-            return "good_noon";
-        } elseif ($time < "19") {
-            return "good_afternoon";
-        } elseif ($time < "22") {
-            return "good_evening";
-        } else {
-            return "good_night";
+        $time = date('H');
+        if ($time < '6') {
+            return 'good_early_morning';
+        } elseif ($time < '9') {
+            return 'good_morning';
+        } elseif ($time < '12') {
+            return 'good_forenoon';
+        } elseif ('12' === $time) {
+            return 'good_noon';
+        } elseif ($time < '19') {
+            return 'good_afternoon';
+        } elseif ($time < '22') {
+            return 'good_evening';
         }
+
+        return 'good_night';
     }
+
     /**
      * @param $rc
+     *
      * @return bool
+     *
      * @see https://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
      */
     public static function verifyRC($rc)
@@ -1045,15 +1057,15 @@ class Lib
 
         list(, $year, $month, $day, $ext, $c) = $matches;
 
-        if ($c === '') {
+        if ('' === $c) {
             $year += $year < 54 ? 1900 : 1800;
         } else {
             // kontrolní číslice
-            $mod = ($year . $month . $day . $ext) % 11;
-            if ($mod === 10) {
+            $mod = ($year.$month.$day.$ext) % 11;
+            if (10 === $mod) {
                 $mod = 0;
             }
-            if ($mod !== (int)$c) {
+            if ($mod !== (int) $c) {
                 return false;
             }
 
@@ -1079,7 +1091,9 @@ class Lib
 
     /**
      * @param $ic
+     *
      * @return bool
+     *
      * @see https://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
      */
     public static function verifyIC($ic)
@@ -1094,22 +1108,22 @@ class Lib
 
         // kontrolní součet
         $a = 0;
-        for ($i = 0; $i < 7; $i++) {
+        for ($i = 0; $i < 7; ++$i) {
             $a += $ic[$i] * (8 - $i);
         }
 
         $a = $a % 11;
-        if ($a === 0) {
+        if (0 === $a) {
             $c = 1;
-        } elseif ($a === 1) {
+        } elseif (1 === $a) {
             $c = 0;
         } else {
             $c = 11 - $a;
         }
 
-        return (int)$ic[7] === $c;
+        return (int) $ic[7] === $c;
     }
-    
+
     /**
      * @param \DateTime $date
      * @param bool      $withYear
@@ -1140,52 +1154,50 @@ class Lib
         return $q.'/'.$date->format('Y');
     }
 
-	/**
-	 * @param $string
-	 * @return array
-	 */
-	public static function parseStringForSearch($string)
-	{
-		$words = explode(' ', $string);
-		$conditions = [];
+    /**
+     * @param $string
+     *
+     * @return array
+     */
+    public static function parseStringForSearch($string)
+    {
+        $words = explode(' ', $string);
+        $conditions = [];
 
-		foreach ($words as $word) {
-			$word = trim($word);
+        foreach ($words as $word) {
+            $word = trim($word);
 
-			if (empty($word)) {
-				continue;
-			}
+            if (empty($word)) {
+                continue;
+            }
 
-			if (is_numeric($word)) {
-				$conditions[] = $word;
-				continue;
-			}
+            if (is_numeric($word)) {
+                $conditions[] = $word;
+                continue;
+            }
 
-			if (strlen($word) == 1) {
-				continue;
-			}
+            if (1 === mb_strlen($word)) {
+                continue;
+            }
 
-			if (strlen($word) > 7) {
-				$conditions[] = mb_substr($word, 0, -3, 'UTF-8');
-				continue;
-			}
+            if (mb_strlen($word) > 7) {
+                $conditions[] = mb_substr($word, 0, -3, 'UTF-8');
+                continue;
+            }
 
-			if (strlen($word) > 5) {
-				$conditions[] = mb_substr($word, 0, -1, 'UTF-8');
-				continue;
-			}
+            if (mb_strlen($word) > 5) {
+                $conditions[] = mb_substr($word, 0, -1, 'UTF-8');
+                continue;
+            }
 
-			if (in_array(mb_substr($word, -1, null, 'UTF-8'), ['ě', 'š', 'č', 'ř', 'ž', 'ý', 'á', 'í', 'é', 'ú', 'ů'])) {
-				$conditions[] = mb_substr($word, 0, -1, 'UTF-8');
-				continue;
-			}
+            if (in_array(mb_substr($word, -1, null, 'UTF-8'), ['ě', 'š', 'č', 'ř', 'ž', 'ý', 'á', 'í', 'é', 'ú', 'ů'], true)) {
+                $conditions[] = mb_substr($word, 0, -1, 'UTF-8');
+                continue;
+            }
 
-			$conditions[] = $word;
+            $conditions[] = $word;
+        }
 
-		}
-
-		return $conditions;
-
-	}
-    
+        return $conditions;
+    }
 }
