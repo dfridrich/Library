@@ -1139,5 +1139,53 @@ class Lib
 
         return $q.'/'.$date->format('Y');
     }
+
+	/**
+	 * @param $string
+	 * @return array
+	 */
+	public static function parseStringForSearch($string)
+	{
+		$words = explode(' ', $string);
+		$conditions = [];
+
+		foreach ($words as $word) {
+			$word = trim($word);
+
+			if (empty($word)) {
+				continue;
+			}
+
+			if (is_numeric($word)) {
+				$conditions[] = $word;
+				continue;
+			}
+
+			if (strlen($word) == 1) {
+				continue;
+			}
+
+			if (strlen($word) > 7) {
+				$conditions[] = mb_substr($word, 0, -3, 'UTF-8');
+				continue;
+			}
+
+			if (strlen($word) > 5) {
+				$conditions[] = mb_substr($word, 0, -1, 'UTF-8');
+				continue;
+			}
+
+			if (in_array(mb_substr($word, -1, null, 'UTF-8'), ['ě', 'š', 'č', 'ř', 'ž', 'ý', 'á', 'í', 'é', 'ú', 'ů'])) {
+				$conditions[] = mb_substr($word, 0, -1, 'UTF-8');
+				continue;
+			}
+
+			$conditions[] = $word;
+
+		}
+
+		return $conditions;
+
+	}
     
 }
