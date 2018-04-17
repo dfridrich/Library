@@ -205,6 +205,44 @@ class Lib
         return static::generateShortLink($lenght, $safeChars);
     }
 
+	/**
+	 * @return string
+	 */
+	public static function generateCzechPassword()
+	{
+		$fruit = [
+			'Angrešt',
+			'Bluma',
+			'Borůvka',
+			'Broskev',
+			'Brusinka',
+			'Bílý rybíz',
+			'Hrozny',
+			'Hruška',
+			'Jablko',
+			'Jahoda',
+			'Jeřabiny',
+			'Kaštan jedlý',
+			'Lískový ořech',
+			'Malina',
+			'Mandle',
+			'Meruňka',
+			'Mirabelka',
+			'Oskeruše',
+			'Ostružina',
+			'Rybíz červený',
+			'Slíva',
+			'Trnka',
+			'Třešně',
+			'Višně',
+			'Vlašský ořech',
+			'Černý rybíz',
+			'Švestka',
+		];
+
+		return self::idize(str_replace(" ", null, $fruit[array_rand($fruit)]) . rand(1000, 9999));
+	}
+
     /**
      * @param $string
      * @param int  $length
