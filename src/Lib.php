@@ -1237,5 +1237,29 @@ class Lib
         }
 
         return $conditions;
+    }    
+	
+    /**
+     * @param string $input
+     * @param int $rowLength
+     * @return string
+     */
+    public static function wrapPlainText($input, $rowLength = 50)
+    {
+        $words = explode(' ', $input);
+        $rows = [];
+        $row = '';
+    
+        foreach ($words as $word) {
+            if (strlen($row . ' ' . $word) > $rowLength) {
+                $rows[] = trim($row);
+                $row = '';
+            }
+            $row .= ' ' . $word;
+        }
+        $rows[] = trim($row);
+    
+        return implode("\n", $rows);
     }
+
 }
