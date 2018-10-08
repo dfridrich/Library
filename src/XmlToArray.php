@@ -59,7 +59,7 @@ class XmlToArray
     {
         $xml = self::getXMLRoot();
         if (is_string($input_xml)) {
-            $parsed = $xml->loadXML($input_xml);
+            $parsed = $xml->loadXML($input_xml, LIBXML_COMPACT | LIBXML_PARSEHUGE);
             if (!$parsed) {
                 throw new \Exception('[XML2Array] Error parsing the XML string.');
             }
