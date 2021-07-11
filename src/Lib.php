@@ -68,12 +68,12 @@ class Lib
             if (strpos($_SERVER['HTTP_X_FORWARDED_FOR'], ',') !== false) {
                 $iplist = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
                 foreach ($iplist as $ip) {
-                    if (validate_ip($ip)) {
+                    if (self::validateIp($ip)) {
                         return $ip;
                     }
                 }
             } else {
-                if (validate_ip($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                if (self::validateIp($_SERVER['HTTP_X_FORWARDED_FOR'])) {
                     return $_SERVER['HTTP_X_FORWARDED_FOR'];
                 }
             }
@@ -92,7 +92,7 @@ class Lib
         }
 
         // Return unreliable IP address since all else failed
-        return $_SERVER['REMOTE_ADDR'];
+        return @$_SERVER['REMOTE_ADDR'];
     }
 
     /**
