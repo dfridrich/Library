@@ -466,6 +466,10 @@ class Lib
      */
     public static function stripDiacritics($string)
     {
+	if (is_null($string)) {
+            return '';
+        }
+	    
         $string = str_replace(
             [
                 'ě',
