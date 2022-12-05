@@ -1353,7 +1353,7 @@ class Lib
     /**
      * @see https://gist.github.com/gwarnants/2048791?permalink_comment_id=3438918#gistcomment-3438918
      */
-    public function isBase64Encoded(string $s): bool
+    public static function isBase64Encoded(string $s): bool
     {
         if ((bool) preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $s) === false) {
             return false;
