@@ -1350,4 +1350,26 @@ class Lib
         return implode("\n", $rows);
     }
 
+    /**
+     * @see https://gist.github.com/gwarnants/2048791?permalink_comment_id=3438918#gistcomment-3438918
+     */
+    private function isBase64Encoded(string $s): bool
+    {
+        if ((bool) preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $s) === false) {
+            return false;
+        }
+	    
+        $decoded = base64_decode($s, true);
+        if ($decoded === false) {
+            return false;
+        }
+	    
+        $encoding = mb_detect_encoding($decoded);
+        if (! in_array($encoding, ['UTF-8', 'ASCII'], true)) {
+            return false;
+        }
+	    
+        return $decoded !== false && base64_encode($decoded) === $s;
+    }
+
 }
