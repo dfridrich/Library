@@ -4,12 +4,12 @@
          colors="true">
 
     <testsuites>
-        <testsuite name="dfridrich/Library test suite">
-            <directory suffix="Test.php">./Tests</directory>
+        <testsuite name="Project Test Suite">
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
     <php>
-        <env name="WEATHER_API" value="" />
+        <env name="WEATHER_API" value=""/>
     </php>
 </phpunit>
