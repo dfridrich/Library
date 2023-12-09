@@ -34,3 +34,5 @@ jobs:
         run: composer install --prefer-dist --dev
 
       - run: phpunit
+        env:
+          WEATHER_API: ${{ secrets.WEATHER_API }}
