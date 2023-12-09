@@ -53,7 +53,7 @@ class OpenWeather
     public function getForecast($city = null, $lang = 'cz', $units = self::UNITS_METRIC)
     {
         $city = null === $city ? self::DEFAULT_CITY : $city;
-        $cachedFileName = md5(date('YmdH').$city.$lang.$units).'.json';
+        $cachedFileName = sprintf("%s_%s.json", date('YmdH'), hash('crc32', $city.$lang.$units));
 
         if (!is_dir($this->cacheDir)) {
             mkdir($this->cacheDir);
@@ -64,7 +64,9 @@ class OpenWeather
         if (!is_file($cachedFile)) {
             $url = sprintf(self::API_URL, urlencode($city), $lang, $units, $this->apiKey);
             $json = json_decode(file_get_contents($url));
-            file_put_contents($cachedFile, json_encode($json, JSON_PRETTY_PRINT));
+            if (!empty($json)) {
+                file_put_contents($cachedFile, json_encode($json, JSON_PRETTY_PRINT));
+            }
         } else {
             $json = json_decode(file_get_contents($cachedFile));
         }

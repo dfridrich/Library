@@ -11,8 +11,9 @@
 
 use Defr\CnbRates;
 use Defr\CnbRates\Rates;
+use PHPUnit\Framework\TestCase;
 
-class CnbRatesTest extends PHPUnit_Framework_TestCase
+class CnbRatesTest extends TestCase
 {
     public function testEurRate()
     {
@@ -23,6 +24,6 @@ class CnbRatesTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\DateTime', $rates->getDate());
         $this->assertSame('EUR', $rates->getEur()->getCode());
-        $this->assertInternalType('float', $rates->getEur()->getRate());
+        $this->assertIsFloat($rates->getEur()->getRate());
     }
 }
