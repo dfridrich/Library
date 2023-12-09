@@ -12,8 +12,9 @@
 use Defr\NameDays;
 use Defr\NameDaysCz;
 use Defr\NameDaysSk;
+use PHPUnit\Framework\TestCase;
 
-class NameDayTest extends PHPUnit_Framework_TestCase
+class NameDayTest extends TestCase
 {
     public function testCzNameDay()
     {

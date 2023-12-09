@@ -23,8 +23,8 @@ Many useful PHP helpers in one Library.
 
 Via Composer
 
-``` sh
-$ composer require "dfridrich/library:^1.0"
+```shell
+composer require dfridrich/library
 ```
 
 ## Credits

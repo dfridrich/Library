@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit bootstrap="./vendor/autoload.php"
-         colors="true"
-         verbose="true">
+         colors="true">
 
     <testsuites>
         <testsuite name="dfridrich/Library test suite">
@@ -10,13 +9,7 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
-            <directory>./src</directory>
-        </whitelist>
-    </filter>
-
     <php>
-        <env name="WEATHER_API"/>
+        <env name="WEATHER_API" value="" />
     </php>
 </phpunit>
