@@ -5,6 +5,8 @@
 [![License](https://poser.pugx.org/dfridrich/library/license)](https://packagist.org/packages/dfridrich/library)
 [![Build Status](https://travis-ci.org/dfridrich/Library.svg)](https://travis-ci.org/dfridrich/Library) 
 
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/dfridrich)
+
 Many useful PHP helpers in one Library.
 
 ## What Library includes
