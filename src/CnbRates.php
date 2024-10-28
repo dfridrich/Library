@@ -27,7 +27,7 @@ use function file_put_contents;
  */
 class CnbRates
 {
-    public const API_URL = 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt?date=%s';
+    public const API_URL = 'https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt?date=%s';
 
     private string $cacheDir;
 
