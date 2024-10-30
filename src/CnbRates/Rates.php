@@ -11,15 +11,19 @@
 
 namespace Defr\CnbRates;
 
+use ArrayIterator;
+use DateTime;
+use InvalidArgumentException;
+use IteratorAggregate;
+
 /**
- * Class Rates.
- *
  * @author Dennis Fridrich <fridrich.dennis@gmail.com>
+ * @implements IteratorAggregate<Rates>
  */
-class Rates implements \IteratorAggregate
+class Rates implements IteratorAggregate
 {
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $date;
 
@@ -29,10 +33,9 @@ class Rates implements \IteratorAggregate
     private $rates;
 
     /**
-     * @param \DateTime $date
      * @param array     $rates
      */
-    public function __construct(\DateTime $date, array $rates)
+    public function __construct(DateTime $date, array $rates)
     {
         $this->date = $date;
         $this->rates = $rates;
@@ -41,8 +44,7 @@ class Rates implements \IteratorAggregate
     /**
      * @param $currency
      *
-     * @throws \InvalidArgumentException
-     *
+     * @throws InvalidArgumentException
      * @return Rate
      */
     public function getRate($currency = 'EUR')
@@ -51,7 +53,7 @@ class Rates implements \IteratorAggregate
         if (array_key_exists($currency, $this->rates)) {
             return $this->rates[$currency];
         }
-        throw new \InvalidArgumentException('Kurz pro měnu '.$currency.' neexistuje.');
+        throw new InvalidArgumentException('Kurz pro měnu '.$currency.' neexistuje.');
     }
 
     /**
@@ -79,7 +81,7 @@ class Rates implements \IteratorAggregate
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {
@@ -95,10 +97,10 @@ class Rates implements \IteratorAggregate
     }
 
     /**
-     * @return \ArrayIterator
+     * @return ArrayIterator
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->rates);
+        return new ArrayIterator($this->rates);
     }
 }
